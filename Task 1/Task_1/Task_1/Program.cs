@@ -19,7 +19,67 @@ namespace Task_1
             //T_1_1_7_ARRAY_PROCESSING();
             //T_1_1_8_NO_POSITIVE();
             //T_1_1_9_NON_NEGATIVE_SUM();
-            T_1_1_10_2D_ARRAY();
+            //T_1_1_10_2D_ARRAY();
+
+            string currentCommand = "";
+            while (currentCommand != "0")
+            {
+                Console.Clear();
+                Console.WriteLine(
+                    @"Введите комманду : 
+    1: T_1_1_1_Rectangle
+    2: T_1_1_2_Triangle
+    3: T_1_1_3_AnotherTriangle
+    4: T_1_1_4_XMAS_TREE
+    5: T_1_1_5_SUM_OF_NUMBERS
+    6: T_1_1_6_FONT_ADJUSTMENT
+    7: T_1_1_7_ARRAY_PROCESSING
+    8: T_1_1_8_NO_POSITIVE
+    9: T_1_1_9_NON_NEGATIVE_SUM
+    10: T_1_1_10_2D_ARRAY
+    0: Exit
+"
+);
+                currentCommand = Console.ReadLine();
+                switch (currentCommand)
+                {
+                    case "1":
+                        T_1_1_1_Rectangle();
+                        break;
+                    case "2":
+                        T_1_1_2_Triangle();
+                        break;
+                    case "3":
+                        T_1_1_3_AnotherTriangle();
+                        break;
+                    case "4":
+                        T_1_1_4_XMAS_TREE();
+                        break;
+                    case "5":
+                        T_1_1_5_SUM_OF_NUMBERS();
+                        break;
+                    case "6":
+                        T_1_1_6_FONT_ADJUSTMENT();
+                        break;
+                    case "7":
+                        T_1_1_7_ARRAY_PROCESSING();
+                        break;
+                    case "8":
+                        T_1_1_8_NO_POSITIVE();
+                        break;
+                    case "9":
+                        T_1_1_9_NON_NEGATIVE_SUM();
+                        break;
+                    case "10":
+                        T_1_1_10_2D_ARRAY();
+                        break;
+
+                    case "0":
+                        currentCommand = "0";
+                        break;
+                }
+                Console.ReadKey();
+            }
 
             Console.ReadKey();
         }
@@ -44,6 +104,7 @@ namespace Task_1
             Console.WriteLine($"Площадь прямоугольника со сторонами {a} и {b} равна {a * b}");
         }
 
+        // Чтобы не дублировать одну и ту же проверку
         static int T_1_1_1_Rectangle__Helper(string strNum)
         {
             int num = 0;
@@ -67,6 +128,7 @@ namespace Task_1
         // на экран следующее «изображение», состоящее из N строк:
         static void T_1_1_2_Triangle()
         {
+            Console.WriteLine("Введите N");
             int N = int.Parse(Console.ReadLine());
 
             for (int i = 0; i < N; i++)
@@ -81,6 +143,7 @@ namespace Task_1
 
         static void T_1_1_3_AnotherTriangle()
         {
+            Console.WriteLine("Введите N");
             int N = int.Parse(Console.ReadLine());
             Console.Clear();
 
@@ -112,6 +175,7 @@ namespace Task_1
         // и выводит на экран следующее «изображение», состоящее из N треугольников:
         static void T_1_1_4_XMAS_TREE()
         {
+            Console.WriteLine("Введите N");
             int N = int.Parse(Console.ReadLine());
             Console.Clear();
 
@@ -207,6 +271,7 @@ namespace Task_1
         0: exit"
                 );
 
+                // Меню выбора
                 currentCommand = Console.ReadLine();
                 switch (currentCommand)
                 {
@@ -243,7 +308,7 @@ namespace Task_1
             List<int> arr = new List<int>();
             //arr.AddRange(new int[] { 5, 7, 2, 1, 4, 6, 3 });
 
-            // Генератор псевдослучайных величин с сидом
+            // Генератор псевдослучайных величин с сидом раз уж нельзя использовать встроенные функции языка :)
             for (int i = 0; i < 30; i++)
             {
                 int a = 45;
@@ -268,6 +333,7 @@ namespace Task_1
                 Console.Write(item + " ");
             }
 
+            // Min/Max Values
             int maxValue = int.MinValue;
             int minValue = int.MaxValue;
             for (int i = 0; i < arr.Count; i++)
@@ -278,6 +344,7 @@ namespace Task_1
                     minValue = arr[i];
             }
 
+            // Сортировка(по сути неоптимальная выборка)
             for (int i = 0; i < arr.Count - 1; i++)
             {
                 for (int j = i; j < arr.Count; j++)
@@ -291,6 +358,7 @@ namespace Task_1
                 }
             }
 
+            // Вывод
             Console.WriteLine();
             Console.WriteLine("Sorted:");
             foreach (var item in arr)
@@ -307,6 +375,7 @@ namespace Task_1
 
             int[,,] thirdDim = new int[5, 5, 5];
 
+            // Заполнение 3d массива
             for (int i = 0; i < thirdDim.GetLength(0); i++)
             {
                 for (int j = 0; j < thirdDim.GetLength(1); j++)
@@ -318,7 +387,7 @@ namespace Task_1
                 }
             }
 
-
+            // Замена положительных элементов на 0
             for (int i = 0; i < thirdDim.GetLength(0); i++)
             {
                 for (int j = 0; j < thirdDim.GetLength(1); j++)
@@ -331,7 +400,7 @@ namespace Task_1
                 }
             }
 
-            // Я не представляю как адекватно вывести трёхмерный массив :/
+            // Не стал выводить трёхмерный массив т.к. в этом мало смысла, но можно вывести его 2d части.
         }
 
         // Написать программу, которая определяет сумму неотрицательных элементов в одномерном массиве. 
@@ -364,6 +433,7 @@ namespace Task_1
             int[,] arr = new int[5, 5];
             Random rnd = new Random(5);
 
+            // Случайное заполнение
             for (int i = 0; i < arr.GetLength(0); i++)
             {
                 for (int j = 0; j < arr.GetLength(1); j++)
@@ -372,6 +442,7 @@ namespace Task_1
                 }
             }
 
+            // Вывод
             for (int i = 0; i < arr.GetLength(0); i++)
             {
                 for (int j = 0; j < arr.GetLength(1); j++)
@@ -381,8 +452,8 @@ namespace Task_1
                 Console.WriteLine();
             }
 
+            // Подсчитывание суммы
             int sum = 0;
-
             for (int i = 0; i < arr.GetLength(0); i++)
             {
                 for (int j = 0; j < arr.GetLength(1); j++)
