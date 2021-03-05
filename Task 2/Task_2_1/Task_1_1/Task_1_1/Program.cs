@@ -26,30 +26,45 @@ namespace Task_1_1
             char[] arr = new char[] { '1', '2', '3', '4', '5' };
             CustomString customStr = new CustomString(arr);
             
+            // Демонстрация вставки
             customStr = customStr.Insert(2, 'J');
             Console.WriteLine(customStr);
 
+            // Демонстрация удаления
             customStr = customStr.Remove(2);
             Console.WriteLine(customStr);
 
             Console.WriteLine();
 
+            // Демонстрация индексатора
             for (int i = 0; i < customStr.Length; i++)
             {
                 Console.Write(customStr[i]);
             }
             Console.WriteLine();
 
+            // Демонстрация первого найденного символа
             Console.WriteLine(customStr.FindFirstChar('1'));
 
+            // Демонстрация последнего найденного символа (или первого найденного с конца)
             Console.WriteLine(customStr.FindLastChar('2'));
 
-            char[] test = customStr.ToArray();
-
+            // Демонстрация преобразования в Массив char
             foreach (var item in customStr.ToArray())
             {
                 Console.Write(item + "|");
             }
+            Console.WriteLine();
+
+            // Демонстрация конкатенации
+            CustomString cstmStr = new CustomString(new char[] { 'H', 'e', 'y', '!' });
+            Console.WriteLine(cstmStr + customStr);
+
+            // Демонстрация сравнения
+            Console.WriteLine(cstmStr == customStr);
+
+            CustomString equalStrToFirst = new CustomString(new char[] { '1', '2', '3', '4', '5' });
+            Console.WriteLine(equalStrToFirst == customStr);
 
             Console.ReadKey();
         }
@@ -190,3 +205,4 @@ namespace Task_1_1
 
     //}
 }
+
