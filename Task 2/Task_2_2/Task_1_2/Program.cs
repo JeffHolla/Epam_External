@@ -35,52 +35,33 @@ namespace Task_1_2
         static void Main(string[] args)
         {
             string currentCommand = "";
+
+            PaintHandler paintHandler = new PaintHandler();
+
             while (currentCommand != "0")
             {
-
                 Console.Clear();
                 Console.WriteLine(
                     @"Введите комманду : 
     1: Добавить фигуру
-    2: Вывести фигуры
+    2: Вывести все фигуры
     3: Очистить список фигур
-    4: Выход
     0: Exit
-"
-);
-                currentCommand = Console.ReadLine();
+");
+                currentCommand = Console.ReadLine().Trim();
                 switch (currentCommand)
                 {
-                    //case "1":
-                    //    T_1_1_1_Rectangle();
-                    //    break;
-                    //case "2":
-                    //    T_1_1_2_Triangle();
-                    //    break;
-                    //case "3":
-                    //    T_1_1_3_AnotherTriangle();
-                    //    break;
-                    //case "4":
-                    //    T_1_1_4_XMAS_TREE();
-                    //    break;
-                    //case "5":
-                    //    T_1_1_5_SUM_OF_NUMBERS();
-                    //    break;
-                    //case "6":
-                    //    T_1_1_6_FONT_ADJUSTMENT();
-                    //    break;
-                    //case "7":
-                    //    T_1_1_7_ARRAY_PROCESSING();
-                    //    break;
-                    //case "8":
-                    //    T_1_1_8_NO_POSITIVE();
-                    //    break;
-                    //case "9":
-                    //    T_1_1_9_NON_NEGATIVE_SUM();
-                    //    break;
-                    //case "10":
-                    //    T_1_1_10_2D_ARRAY();
-                    //    break;
+                    case "1":
+                        paintHandler.AddShape();
+                        break;
+
+                    case "2":
+                        paintHandler.ShowAllShapes();
+                        break;
+
+                    case "3":
+                        paintHandler.RemoveAllShapes();
+                        break;
 
                     case "0":
                         currentCommand = "0";
@@ -91,8 +72,6 @@ namespace Task_1_2
 
             Console.ReadKey();
         }
+
     }
-
-
-   
 }

@@ -1,15 +1,17 @@
 ﻿
-namespace Task_1_2
+namespace Task_1_2.Entities_Task_2
 {
     public class Rectangle : AbstractFigure
     {
         public double Height { get; }
         public double Width { get; }
 
-        public Rectangle(Point center, double sideLenght) : base(center)
+        public override string Name { get { return "Rectangle"; } }
+
+        public Rectangle(Point center, double sideLength) : base(center)
         {
-            Height = sideLenght;
-            Width = sideLenght;
+            Height = sideLength;
+            Width = sideLength;
         }
 
         // Здесь тоже можно сократить конструктор на одну строку, но стоит ли?
@@ -19,10 +21,10 @@ namespace Task_1_2
             Width = width;
         }
 
-        public Rectangle(double x_center, double y_center, double sideLenght) : base(new Point(x_center, y_center))
+        public Rectangle(double x_center, double y_center, double sideLength) : base(new Point(x_center, y_center))
         {
-            Height = sideLenght;
-            Width = sideLenght;
+            Height = sideLength;
+            Width = sideLength;
         }
 
         // Не уверен, что стоит вовсе здесь пытаться сократить конструкторы через this, потому что это уменьшает понятность кода

@@ -43,8 +43,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities_Task_2\AbstractFigure.cs" />
+    <Compile Include="Entities_Task_2\AbstractGeometricObject.cs" />
+    <Compile Include="Entities_Task_2\Circle.cs" />
+    <Compile Include="Entities_Task_2\Line.cs" />
+    <Compile Include="Entities_Task_2\Point.cs" />
+    <Compile Include="PaintHandler.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Entities_Task_2\Rectangle.cs" />
+    <Compile Include="Entities_Task_2\Ring.cs" />
+    <Compile Include="Entities_Task_2\Triangle.cs" />
+    <Compile Include="Entities_Task_2\Square.cs" />
+    <Compile Include="FigureValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

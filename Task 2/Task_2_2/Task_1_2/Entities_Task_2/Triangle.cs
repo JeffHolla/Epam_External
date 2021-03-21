@@ -1,7 +1,7 @@
 ﻿using System;
 
 
-namespace Task_1_2
+namespace Task_1_2.Entities_Task_2
 {
     public class Triangle : AbstractFigure
     {
@@ -11,6 +11,8 @@ namespace Task_1_2
 
         public override double Perimeter { get; }
         public override double Area { get; }
+
+        public override string Name { get { return "Triangle"; } }
 
         public Triangle(Point p1, Point p2, Point p3)
             : base(new Point((p1.X + p2.X + p3.X) / 3, (p1.Y + p2.Y + p3.Y) / 3)) //получение центра треугольника

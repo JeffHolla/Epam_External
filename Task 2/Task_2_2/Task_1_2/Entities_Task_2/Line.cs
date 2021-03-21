@@ -1,19 +1,15 @@
 ﻿using System;
 
-namespace Task_1_2
+namespace Task_1_2.Entities_Task_2
 {
-    public class Line
+    public class Line : AbstractGeometricObject
     {
-        private double lenght;
-
         public Point StartPoint { get; }
         public Point EndPoint { get; }
 
-        public double Length {
-            get {
-                return lenght;
-            }
-        }
+        public double Length { get; }
+
+        public override string Name { get { return "Line"; } }
 
         public Line(double x1, double y1, double x2, double y2)
         {
@@ -22,7 +18,7 @@ namespace Task_1_2
 
             Validate(StartPoint, EndPoint);
 
-            lenght = Math.Sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
+            Length = Math.Sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
         }
 
         public Line(Point startPoint, Point endPoint)
@@ -32,7 +28,7 @@ namespace Task_1_2
 
             Validate(StartPoint, EndPoint);
 
-            lenght = Math.Sqrt((EndPoint.X - StartPoint.X) * (EndPoint.X - StartPoint.X) +
+            Length = Math.Sqrt((EndPoint.X - StartPoint.X) * (EndPoint.X - StartPoint.X) +
                 (EndPoint.Y - StartPoint.Y) * (EndPoint.Y - StartPoint.Y));
         }
 

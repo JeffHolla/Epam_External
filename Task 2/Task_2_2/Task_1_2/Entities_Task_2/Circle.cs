@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Task_1_2
+namespace Task_1_2.Entities_Task_2
 {
     public class Circle : AbstractFigure
     {
@@ -10,6 +10,8 @@ namespace Task_1_2
         // потому что это неизменяемое поле?
         public override double Area { get; }
         public override double Perimeter { get; }
+
+        public override string Name { get { return "Circle"; } }
 
         public Circle(Point center, double radius)
             : base(center)

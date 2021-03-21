@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Task_1_2
+﻿
+namespace Task_1_2.Entities_Task_2
 {
-    public class Point
+    public class Point : AbstractGeometricObject
     {
         public double X { get; }
         public double Y { get; }
+
+        public override string Name { get { return "Point"; } }
 
         public Point(double x, double y)
         {

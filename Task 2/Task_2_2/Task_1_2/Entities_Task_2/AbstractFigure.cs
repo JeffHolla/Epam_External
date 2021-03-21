@@ -1,7 +1,7 @@
 ﻿
-namespace Task_1_2
+namespace Task_1_2.Entities_Task_2
 {
-    public abstract class AbstractFigure
+    public abstract class AbstractFigure : AbstractGeometricObject
     {
         public Point Center { get; }
 
