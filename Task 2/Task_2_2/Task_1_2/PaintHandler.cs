@@ -9,10 +9,15 @@ namespace Task_1_2
 {
     public class PaintHandler
     {
-        List<AbstractGeometricObject> shapes = new List<AbstractGeometricObject>();
+        Dictionary<User, List<AbstractGeometricObject>> userShapesPairs = new Dictionary<User, List<AbstractGeometricObject>>();
+        //List<AbstractGeometricObject> shapes = new List<AbstractGeometricObject>();
+        
+        public PaintHandler(User user)
+        {
+            userShapesPairs.Add(user, new List<AbstractGeometricObject>());
+        }
 
-
-        public void AddShape()
+        public void AddShape(User user)
         {
             string currentCommand = "";
 
@@ -28,61 +33,129 @@ namespace Task_1_2
     4: Кольцо
     5: Треугольник
     6: Прямоугольник
-    7: Квадрат"
-);
+    7: Квадрат");
 
-                currentCommand = Console.ReadLine();
                 isChoosing = false;
+                currentCommand = Console.ReadLine();
                 switch (currentCommand)
                 {
                     case "1":
-                        shapes.Add(CreatePoint());
+                        //shapes.Add(CreatePoint());
+                        userShapesPairs[user].Add(CreatePoint());
                         break;
                     case "2":
-                        shapes.Add(CreateLine());
+                        //shapes.Add(CreateLine());
+                        userShapesPairs[user].Add(CreateLine());
                         break;
                     case "3":
-                        shapes.Add(CreateCircle());
+                        //shapes.Add(CreateCircle());
+                        userShapesPairs[user].Add(CreateCircle());
                         break;
                     case "4":
-                        shapes.Add(CreateRing());
+                        //shapes.Add(CreateRing());
+                        userShapesPairs[user].Add(CreateRing());
                         break;
                     case "5":
-                        shapes.Add(CreateTriangle());
+                        //shapes.Add(CreateTriangle());
+                        userShapesPairs[user].Add(CreateTriangle());
                         break;
                     case "6":
-                        shapes.Add(CreateRectangle());
+                        //shapes.Add(CreateRectangle());
+                        userShapesPairs[user].Add(CreateRectangle());
                         break;
                     case "7":
-                        shapes.Add(CreateSquare());
+                        //shapes.Add(CreateSquare());
+                        userShapesPairs[user].Add(CreateSquare());
                         break;
                     default:
-                        Console.WriteLine("Выберите правильный вариант!");
+                        Console.WriteLine("ВЫВОД: Выберите правильный вариант!");
                         isChoosing = true;
                         break;
                 }
             }
         }
 
-        public void ShowAllShapes()
+        public void ShowAllShapes(User user)
         {
-            foreach (var shape in shapes)
+            foreach (var shape in userShapesPairs[user])
             {
                 Console.WriteLine(shape.Name);
             }
         }
 
-        public void RemoveAllShapes()
+        public void RemoveAllShapes(User user)
         {
-            shapes.Clear();
+            userShapesPairs[user].Clear();
         }
 
+        public void AddUser(User user)
+        {
+            userShapesPairs.Add(user, new List<AbstractGeometricObject>());
+        }
+
+        public void AddUser(string username)
+        {
+            userShapesPairs.Add(new User { Name = username }, new List<AbstractGeometricObject>());
+        }
+
+        public void AddUser()
+        {
+            // Можно, конечно, написать одной строкой. Хоть код довольно и прост, возможно, что это затруднит читаемость (но я в этом не уверен).
+            // Рад был бы почитать об этом в отчёте об этом задании :)
+            //userShapesPairs.Add(new User { Name = Console.ReadLine() }, new List<AbstractGeometricObject>());
+
+            string name = Console.ReadLine();
+            User user = new User() { Name = name };
+
+            if (!userShapesPairs.Keys.Contains(user))
+            {
+                userShapesPairs.Add(user, new List<AbstractGeometricObject>());
+            }
+            else
+            {
+                Console.WriteLine("ВЫВОД: Пользователь с таким именем уже существует!");
+            }
+        }
+
+        public User ChangeUser()
+        {
+            Console.WriteLine("ВЫВОД: Доступные пользователи:");
+            // Выцепляем всех пользователей
+            var allUsers = userShapesPairs.Keys.ToArray();
+            // Выводим их на экран
+            for (int i = 0; i < allUsers.Length; i++)
+            {
+                Console.WriteLine($"{i + 1} : {allUsers[i]}");
+            }
+            
+            // Пытаемся получить вразумительный ID от пользователя
+            int userID = 0;
+            while (true)
+            {
+                Console.WriteLine("ВЫВОД: Введите номер пользователя");
+                Console.Write("ВВОД: ");
+                Console.WriteLine();
+
+                if(int.TryParse(Console.ReadLine(), out userID))
+                {
+                    if(userID - 1 >= 0 && userID - 1 < allUsers.Length)
+                    {
+                        return allUsers[userID - 1];
+                    }
+                    else
+                    {
+                        Console.WriteLine("ВЫВОД: Введён неверный id пользователя");
+                        continue;
+                    }
+                }
+            }
+        }
 
         private double InputCoordinate(string coordinateOrient)
         {
             while (true)
             {
-                Console.Write($"{coordinateOrient}: ");
+                Console.Write($"ВВОД {coordinateOrient}: ");
                 if (double.TryParse(Console.ReadLine(), out double coordinate))
                 {
                     return coordinate;
@@ -98,7 +171,7 @@ namespace Task_1_2
         {
             while (true)
             {
-                Console.Write($"{coordinateOrient}: ");
+                Console.Write($"ВВОД {coordinateOrient}: ");
 
                 if (double.TryParse(Console.ReadLine(), out double sideValue))
                 {
@@ -119,10 +192,10 @@ namespace Task_1_2
 
         private Point CreatePoint()
         {
-            Console.WriteLine("Введите координату X: ");
+            Console.WriteLine("ВЫВОД: Введите координату X: ");
             var x = InputCoordinate("X");
 
-            Console.WriteLine("Введите координату Y: ");
+            Console.WriteLine("ВЫВОД: Введите координату Y: ");
             var y = InputCoordinate("Y");
 
             return new Point(x, y);
@@ -130,10 +203,10 @@ namespace Task_1_2
 
         private Line CreateLine()
         {
-            Console.WriteLine("Введите первую точку");
+            Console.WriteLine("ВЫВОД: Введите первую точку");
             var point1 = CreatePoint();
 
-            Console.WriteLine("Введите вторую точку");
+            Console.WriteLine("ВЫВОД: Введите вторую точку");
             var point2 = CreatePoint();
 
             return new Line(point1, point2);
@@ -141,10 +214,10 @@ namespace Task_1_2
 
         private Circle CreateCircle()
         {
-            Console.WriteLine("Введите центр");
+            Console.WriteLine("ВЫВОД: Введите центр");
             var center = CreatePoint();
 
-            Console.WriteLine("Введите радиус: ");
+            Console.WriteLine("ВЫВОД: Введите радиус: ");
             var radius = CreateLine();
 
             var circle = new Circle(center, radius.Length);
@@ -157,13 +230,13 @@ namespace Task_1_2
 
         private Ring CreateRing()
         {
-            Console.WriteLine("Введите центр");
+            Console.WriteLine("ВЫВОД: Введите центр");
             var center = CreatePoint();
 
-            Console.WriteLine("Введите радиус первой окружности: ");
+            Console.WriteLine("ВЫВОД: Введите радиус первой окружности: ");
             var radius1 = CreateLine();
 
-            Console.WriteLine("Введите радиус второй окружности: ");
+            Console.WriteLine("ВЫВОД: Введите радиус второй окружности: ");
             var radius2 = CreateLine();
 
             //return new Ring(center, Math.Min(radius1.Length, radius2.Length), Math.Max(radius1.Length, radius2.Length));
@@ -178,13 +251,13 @@ namespace Task_1_2
         private Triangle CreateTriangle()
         {
 
-            Console.WriteLine("Введите первую точку");
+            Console.WriteLine("ВЫВОД: Введите первую точку");
             var point1 = CreatePoint();
 
-            Console.WriteLine("Введите вторую точку");
+            Console.WriteLine("ВЫВОД: Введите вторую точку");
             var point2 = CreatePoint();
 
-            Console.WriteLine("Введите третью точку");
+            Console.WriteLine("ВЫВОД: Введите третью точку");
             var point3 = CreatePoint();
 
             var triangle = new Triangle(point1, point2, point3);
@@ -197,13 +270,13 @@ namespace Task_1_2
 
         private Rectangle CreateRectangle()
         {
-            Console.WriteLine("Введите центр");
+            Console.WriteLine("ВЫВОД: Введите центр");
             var center = CreatePoint();
 
-            Console.WriteLine("Введите первую сторону: ");
+            Console.WriteLine("ВЫВОД: Введите первую сторону: ");
             var firstSide = CreateLine();
 
-            Console.WriteLine("Введите вторую сторону: ");
+            Console.WriteLine("ВЫВОД: Введите вторую сторону: ");
             var secondSide = CreateLine();
 
             //return new Rectangle(center, firstSide.Length, secondSide.Length);
@@ -217,10 +290,10 @@ namespace Task_1_2
 
         private Square CreateSquare()
         {
-            Console.WriteLine("Введите центр");
+            Console.WriteLine("ВЫВОД: Введите центр");
             var center = CreatePoint();
 
-            Console.WriteLine("Введите сторону: ");
+            Console.WriteLine("ВЫВОД: Введите сторону: ");
             var side = CreateLine();
 
             var square = new Square(center, side.Length);

@@ -34,33 +34,46 @@ namespace Task_1_2
     {
         static void Main(string[] args)
         {
+            // Или лучше вынести всю логику Пользователей в Handler?
+            Console.WriteLine("ВЫВОД: Введите имя пользователя");
+            User currentUser = new User()
+            {
+                Name = Console.ReadLine()
+            };
+
+            PaintHandler paintHandler = new PaintHandler(currentUser);
+
             string currentCommand = "";
-
-            PaintHandler paintHandler = new PaintHandler();
-
             while (currentCommand != "0")
             {
                 Console.Clear();
                 Console.WriteLine(
-                    @"Введите комманду : 
+                    $@"Текущий пользователь : {currentUser}
+Введите комманду : 
     1: Добавить фигуру
     2: Вывести все фигуры
     3: Очистить список фигур
-    0: Exit
+    4: Добавить пользователя
+    5: Сменить пользователя
+    0: Выход
 ");
                 currentCommand = Console.ReadLine().Trim();
                 switch (currentCommand)
                 {
                     case "1":
-                        paintHandler.AddShape();
+                        paintHandler.AddShape(currentUser);
                         break;
-
                     case "2":
-                        paintHandler.ShowAllShapes();
+                        paintHandler.ShowAllShapes(currentUser);
                         break;
-
                     case "3":
-                        paintHandler.RemoveAllShapes();
+                        paintHandler.RemoveAllShapes(currentUser);
+                        break;
+                    case "4":
+                        paintHandler.AddUser();
+                        break;
+                    case "5":
+                        currentUser = paintHandler.ChangeUser();
                         break;
 
                     case "0":
