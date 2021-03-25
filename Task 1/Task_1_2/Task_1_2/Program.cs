@@ -72,19 +72,22 @@ namespace Task_1_2
             //string str = "Викентий хорошо отметил день рождения: " +
             //    "покушал пиццу, посмотрел кино, поиграл в приставку, " +
             //    "пообщался со студентами в чате. Что ещё нужно для жизни?";
-            string[] words = str.Trim().Split(new char[]{';', ':', '!', ',', '.', '?', ' '}, 
-                                                        StringSplitOptions.RemoveEmptyEntries);
+
+            char[] splitters = new char[] { ';', ':', '!', ',', '.', '?', ' ' };
+            string[] words = str.Trim().Split(splitters, StringSplitOptions.RemoveEmptyEntries);
 
             int charsCount = 0;
             foreach (var word in words)
             {
-                charsCount += word.Count();
+                charsCount += word.Length;
             }
+
+            double averageWordLenght = (double)charsCount / words.Length;
 
             // Без округления
             Console.WriteLine($"Сумма символов = {charsCount}");
             Console.WriteLine($"Количество слов =  {words.Length}");
-            Console.WriteLine($"Средняя длина слова {(double)charsCount / words.Length} ");
+            Console.WriteLine($"Средняя длина слова {averageWordLenght} ");
         }
 
         /*
@@ -106,7 +109,7 @@ namespace Task_1_2
             StringBuilder doubledString = new StringBuilder();
             for (int i = 0; i < strToDouble.Length; i++)
             {
-                if (symbols.Contains(strToDouble[i]) == true)
+                if (symbols.Contains(strToDouble[i]))
                 {
                     doubledString.Append(strToDouble[i]);
                     doubledString.Append(strToDouble[i]);
@@ -156,7 +159,7 @@ namespace Task_1_2
             //string str = "я плохо учил русский язык. " +
             //    "забываю начинать предложения с заглавной. хорошо, что можно написать программу!";
 
-            String regex = "([ а-яА-Я,:;]+[.|!|?])";
+            string regex = "([ а-яА-Я,:;]+[.|!|?])";
             List<string> sentences = new List<string>();
 
             foreach (Match match in Regex.Matches(str, regex, RegexOptions.IgnoreCase))
@@ -169,7 +172,7 @@ namespace Task_1_2
                 sentences[i] = Char.ToUpper(sentences[i][0]) + sentences[i].Substring(1);
             }
 
-            Console.WriteLine(String.Join(" ", sentences));
+            Console.WriteLine(string.Join(" ", sentences));
         }
     }
 }
