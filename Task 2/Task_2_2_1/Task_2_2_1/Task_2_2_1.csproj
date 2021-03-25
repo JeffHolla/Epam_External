@@ -53,6 +53,7 @@
     <Compile Include="Entities\Player.cs" />
     <Compile Include="Entities\Commons\Point.cs" />
     <Compile Include="Entities\Interfaces\IMovable.cs" />
+    <Compile Include="Entities\Commons\GameHandler.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

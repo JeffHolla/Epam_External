@@ -93,12 +93,16 @@ namespace Task_1
             Console.Write("Введите сторону a = ");
             int a = T_1_1_1_Rectangle__Helper(Console.ReadLine());
             if (a == -1)
+            {
                 return;
+            }
 
             Console.Write("Введите сторону b = ");
             int b = T_1_1_1_Rectangle__Helper(Console.ReadLine());
             if (b == -1)
+            {
                 return;
+            }
             // Можно сделать это тернарником, но не уверен что это читабельнее
 
             Console.WriteLine($"Площадь прямоугольника со сторонами {a} и {b} равна {a * b}");
@@ -114,8 +118,7 @@ namespace Task_1
                 Console.WriteLine("Введено число неверного формата!");
                 return -1;
             }
-            else
-                if (num <= 0)
+            else if (num <= 0)
             {
                 Console.WriteLine("Число должно быть больше нуля");
                 return -1;
@@ -129,7 +132,8 @@ namespace Task_1
         static void T_1_1_2_Triangle()
         {
             Console.WriteLine("Введите N");
-            int N = int.Parse(Console.ReadLine());
+            int N = 0;
+            int.TryParse(Console.ReadLine(), out N);
 
             for (int i = 0; i < N; i++)
             {
@@ -292,7 +296,9 @@ namespace Task_1
                 }
 
                 if (currentCommand == "0")
+                {
                     break;
+                }
             }
         }
 
@@ -339,9 +345,13 @@ namespace Task_1
             for (int i = 0; i < arr.Count; i++)
             {
                 if (arr[i] > maxValue)
+                {
                     maxValue = arr[i];
+                }
                 if (arr[i] < minValue)
+                {
                     minValue = arr[i];
+                }
             }
 
             // Сортировка(по сути неоптимальная выборка)
@@ -395,7 +405,9 @@ namespace Task_1
                     for (int z = 0; z < thirdDim.GetLength(2); z++)
                     {
                         if (thirdDim[i, j, z] > 0)
+                        {
                             thirdDim[i, j, z] = 0;
+                        }
                     }
                 }
             }
@@ -459,7 +471,9 @@ namespace Task_1
                 for (int j = 0; j < arr.GetLength(1); j++)
                 {
                     if (i + j % 2 == 0)
+                    {
                         sum += arr[i, j];
+                    }
                 }
             }
 
