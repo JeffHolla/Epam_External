@@ -100,10 +100,12 @@ namespace Task_1_2
 
         public void AddUser()
         {
-            // Можно, конечно, написать одной строкой. Хоть код довольно и прост, возможно, что это затруднит читаемость (но я в этом не уверен).
+            // Можно, конечно, написать одной строкой. Хоть код довольно и прост, но, возможно, это затруднит читаемость (но я в этом не уверен).
             // Рад был бы почитать об этом в отчёте об этом задании :)
             //userShapesPairs.Add(new User { Name = Console.ReadLine() }, new List<AbstractGeometricObject>());
 
+            Console.WriteLine("ВЫВОД: Введите пользователя");
+            Console.Write("ВВОД: ");
             string name = Console.ReadLine();
             User user = new User() { Name = name };
 
@@ -134,7 +136,6 @@ namespace Task_1_2
             {
                 Console.WriteLine("ВЫВОД: Введите номер пользователя");
                 Console.Write("ВВОД: ");
-                Console.WriteLine();
 
                 if(int.TryParse(Console.ReadLine(), out userID))
                 {
@@ -208,8 +209,14 @@ namespace Task_1_2
 
             Console.WriteLine("ВЫВОД: Введите вторую точку");
             var point2 = CreatePoint();
+            
+            var line = new Line(point1, point2);
+            if (FigureValidator.IsValid(line))
+            {
+                return line;
+            }
 
-            return new Line(point1, point2);
+            return null;
         }
 
         private Circle CreateCircle()
@@ -225,6 +232,7 @@ namespace Task_1_2
             {
                 return circle;
             }
+
             return null;
         }
 
@@ -239,12 +247,12 @@ namespace Task_1_2
             Console.WriteLine("ВЫВОД: Введите радиус второй окружности: ");
             var radius2 = CreateLine();
 
-            //return new Ring(center, Math.Min(radius1.Length, radius2.Length), Math.Max(radius1.Length, radius2.Length));
             var ring = new Ring(center, Math.Min(radius1.Length, radius2.Length), Math.Max(radius1.Length, radius2.Length));
             if (FigureValidator.IsValid(ring))
             {
                 return ring;
             }
+
             return null;
         }
 
@@ -265,6 +273,7 @@ namespace Task_1_2
             {
                 return triangle;
             }
+
             return null;
         }
 
@@ -279,12 +288,12 @@ namespace Task_1_2
             Console.WriteLine("ВЫВОД: Введите вторую сторону: ");
             var secondSide = CreateLine();
 
-            //return new Rectangle(center, firstSide.Length, secondSide.Length);
             var rectangle = new Rectangle(center, firstSide.Length, secondSide.Length);
             if (FigureValidator.IsValid(rectangle))
             {
                 return rectangle;
             }
+
             return null;
         }
 

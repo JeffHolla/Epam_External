@@ -36,6 +36,7 @@ namespace Task_1_2
         {
             // Или лучше вынести всю логику Пользователей в Handler?
             Console.WriteLine("ВЫВОД: Введите имя пользователя");
+            Console.Write("ВВОД: ");
             User currentUser = new User()
             {
                 Name = Console.ReadLine()

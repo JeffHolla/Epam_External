@@ -9,6 +9,21 @@ namespace Task_1_2
 {
     public static class FigureValidator
     {
+        public static bool IsValid(Line line)
+        {
+            if (line.StartPoint == line.EndPoint && line.StartPoint == line.EndPoint)
+            {
+                throw new Exception("Заданы две точки в одном месте!");
+            }
+
+            if (line.StartPoint == null || line.EndPoint == null)
+            {
+                throw new NullReferenceException("Задана точка значением null!");
+            }
+
+            return true;
+        }
+
         public static bool IsValid(Rectangle rectangle)
         {
             if (rectangle.Height <= 0 || rectangle.Width <= 0)
