@@ -11,7 +11,7 @@ namespace Task_1_2
     {
         Dictionary<User, List<AbstractGeometricObject>> userShapesPairs = new Dictionary<User, List<AbstractGeometricObject>>();
         //List<AbstractGeometricObject> shapes = new List<AbstractGeometricObject>();
-        
+
         public PaintHandler(User user)
         {
             userShapesPairs.Add(user, new List<AbstractGeometricObject>());
@@ -129,7 +129,7 @@ namespace Task_1_2
             {
                 Console.WriteLine($"{i + 1} : {allUsers[i]}");
             }
-            
+
             // Пытаемся получить вразумительный ID от пользователя
             int userID = 0;
             while (true)
@@ -137,9 +137,9 @@ namespace Task_1_2
                 Console.WriteLine("ВЫВОД: Введите номер пользователя");
                 Console.Write("ВВОД: ");
 
-                if(int.TryParse(Console.ReadLine(), out userID))
+                if (int.TryParse(Console.ReadLine(), out userID))
                 {
-                    if(userID - 1 >= 0 && userID - 1 < allUsers.Length)
+                    if (userID - 1 >= 0 && userID - 1 < allUsers.Length)
                     {
                         return allUsers[userID - 1];
                     }
@@ -168,11 +168,11 @@ namespace Task_1_2
             }
         }
 
-        private double InputSide(string coordinateOrient)
+        private double InputGreaterThanZero()
         {
             while (true)
             {
-                Console.Write($"ВВОД {coordinateOrient}: ");
+                Console.Write($"ВВОД: ");
 
                 if (double.TryParse(Console.ReadLine(), out double sideValue))
                 {
@@ -183,6 +183,23 @@ namespace Task_1_2
                     }
 
                     return sideValue;
+                }
+                else
+                {
+                    Console.WriteLine("Неправильное значение! Введите корректное значение.");
+                }
+            }
+        }
+
+        private double InputDouble()
+        {
+            while (true)
+            {
+                Console.Write($"ВВОД: ");
+
+                if (double.TryParse(Console.ReadLine(), out double doubleValue))
+                {
+                    return doubleValue;
                 }
                 else
                 {
@@ -209,7 +226,7 @@ namespace Task_1_2
 
             Console.WriteLine("ВЫВОД: Введите вторую точку");
             var point2 = CreatePoint();
-            
+
             var line = new Line(point1, point2);
             if (FigureValidator.IsValid(line))
             {
@@ -225,9 +242,9 @@ namespace Task_1_2
             var center = CreatePoint();
 
             Console.WriteLine("ВЫВОД: Введите радиус: ");
-            var radius = CreateLine();
+            double radius = InputGreaterThanZero();
 
-            var circle = new Circle(center, radius.Length);
+            var circle = new Circle(center, radius);
             if (FigureValidator.IsValid(circle))
             {
                 return circle;
@@ -242,12 +259,12 @@ namespace Task_1_2
             var center = CreatePoint();
 
             Console.WriteLine("ВЫВОД: Введите радиус первой окружности: ");
-            var radius1 = CreateLine();
+            var radius1 = InputGreaterThanZero();
 
             Console.WriteLine("ВЫВОД: Введите радиус второй окружности: ");
-            var radius2 = CreateLine();
+            var radius2 = InputGreaterThanZero();
 
-            var ring = new Ring(center, Math.Min(radius1.Length, radius2.Length), Math.Max(radius1.Length, radius2.Length));
+            var ring = new Ring(center, Math.Min(radius1, radius2), Math.Max(radius1, radius2));
             if (FigureValidator.IsValid(ring))
             {
                 return ring;
@@ -282,13 +299,13 @@ namespace Task_1_2
             Console.WriteLine("ВЫВОД: Введите центр");
             var center = CreatePoint();
 
-            Console.WriteLine("ВЫВОД: Введите первую сторону: ");
-            var firstSide = CreateLine();
+            Console.WriteLine("ВЫВОД: Введите длину первой стороны: ");
+            var firstSide = InputGreaterThanZero();
 
-            Console.WriteLine("ВЫВОД: Введите вторую сторону: ");
-            var secondSide = CreateLine();
+            Console.WriteLine("ВЫВОД: Введите длину второй стороны: ");
+            var secondSide = InputGreaterThanZero();
 
-            var rectangle = new Rectangle(center, firstSide.Length, secondSide.Length);
+            var rectangle = new Rectangle(center, firstSide, secondSide);
             if (FigureValidator.IsValid(rectangle))
             {
                 return rectangle;
@@ -303,9 +320,9 @@ namespace Task_1_2
             var center = CreatePoint();
 
             Console.WriteLine("ВЫВОД: Введите сторону: ");
-            var side = CreateLine();
+            var side = InputGreaterThanZero();
 
-            var square = new Square(center, side.Length);
+            var square = new Square(center, side);
             if (FigureValidator.IsValid(square))
             {
                 return square;

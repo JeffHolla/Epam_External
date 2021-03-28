@@ -11,7 +11,7 @@ namespace Task_1_2
     {
         public static bool IsValid(Line line)
         {
-            if (line.StartPoint == line.EndPoint && line.StartPoint == line.EndPoint)
+            if (line.StartPoint == line.EndPoint)
             {
                 throw new Exception("Заданы две точки в одном месте!");
             }
