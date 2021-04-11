@@ -8,7 +8,7 @@ namespace Task_3_1
     // Можно сделать на основе Node и ссылок, но я не уверен что было бы лучше для задания
     public class CircleList<T>
     {
-        private List<T> objects;//= new List<T>();
+        private List<T> objects;
 
         public int Length { get => objects.Count; } 
 
