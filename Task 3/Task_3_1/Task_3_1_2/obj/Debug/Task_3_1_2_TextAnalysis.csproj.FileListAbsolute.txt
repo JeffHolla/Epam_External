@@ -1,0 +1,7 @@
+C:\Users\Денис\source\repos\Epam_External\Task 3\Task_3_1\Task_3_1_2\bin\Debug\Task_3_1_2.exe.config
+C:\Users\Денис\source\repos\Epam_External\Task 3\Task_3_1\Task_3_1_2\bin\Debug\Task_3_1_2.exe
+C:\Users\Денис\source\repos\Epam_External\Task 3\Task_3_1\Task_3_1_2\bin\Debug\Task_3_1_2.pdb
+C:\Users\Денис\source\repos\Epam_External\Task 3\Task_3_1\Task_3_1_2\obj\Debug\Task_3_1_2_TextAnalysis.csproj.CoreCompileInputs.cache
+C:\Users\Денис\source\repos\Epam_External\Task 3\Task_3_1\Task_3_1_2\obj\Debug\Task_3_1_2.exe
+C:\Users\Денис\source\repos\Epam_External\Task 3\Task_3_1\Task_3_1_2\obj\Debug\Task_3_1_2.pdb
+C:\Users\Денис\source\repos\Epam_External\Task 3\Task_3_1\Task_3_1_2\obj\Debug\Task_3_1_2_TextAnalysis.csprojAssemblyReference.cache
