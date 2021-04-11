@@ -144,7 +144,7 @@ namespace CustomStrings
                 return false;
 
             CustomString custStr = obj as CustomString;
-            if (custStr as CustomString == null)
+            if (custStr is null)
                 return false;
 
             return this == custStr;
@@ -174,7 +174,7 @@ namespace CustomStrings
             if (str1.Length != str2.Length)
                 return false;
 
-            return IsEqual(str1, str2) ? true : false;
+            return IsEqual(str1, str2);
         }
 
         public static bool operator !=(CustomString str1, CustomString str2)
