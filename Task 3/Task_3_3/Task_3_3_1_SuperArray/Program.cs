@@ -18,8 +18,6 @@ using System.Threading.Tasks;
 
 namespace Task_3_3_1_SuperArray
 {
-
-
     class Program
     {
         static void Main(string[] args)
