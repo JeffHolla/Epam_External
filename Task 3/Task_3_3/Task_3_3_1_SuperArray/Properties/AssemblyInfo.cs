@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // Общие сведения об этой сборке предоставляются следующим набором
 // набора атрибутов. Измените значения этих атрибутов, чтобы изменить сведения,
 // связанные со сборкой.
-[assembly: AssemblyTitle("Task_3_2")]
+[assembly: AssemblyTitle("Task_3_3_1_SuperArray")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Task_3_2")]
+[assembly: AssemblyProduct("Task_3_3_1_SuperArray")]
 [assembly: AssemblyCopyright("Copyright ©  2021")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // Следующий GUID служит для идентификации библиотеки типов, если этот проект будет видимым для COM
-[assembly: Guid("1a6d00f5-63a6-4c95-b4ad-6ff1fed5afbb")]
+[assembly: Guid("174634d7-af76-4f53-9299-ebcd376ce409")]
 
 // Сведения о версии сборки состоят из следующих четырех значений:
 //
