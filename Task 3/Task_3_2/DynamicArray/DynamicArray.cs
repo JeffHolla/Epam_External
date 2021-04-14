@@ -5,14 +5,32 @@ using System.Linq;
 
 namespace CustomDynamicArray
 {
-    public class DynamicArray<T> : IEnumerable, IEnumerable<T>
+    public class DynamicArray<T> : IEnumerable, IEnumerable<T>, ICloneable
     {
         private T[] array;
 
         private int ActualNumberOfObjects { get; set; } = 0;
 
         public int Length { get => ActualNumberOfObjects; }
-        public int Capacity { get => array.Length; set { } }
+        public int Capacity
+        {
+            get
+            {
+                return array.Length;
+            }
+            set
+            {
+                if (value < 0)
+                {
+                    throw new ArgumentException("Capacity не может быть меньше нуля!");
+                }
+
+                if (value != Capacity)
+                {
+                    SetCapacity(value);
+                }
+            }
+        }
 
         public DynamicArray()
         {
@@ -40,6 +58,8 @@ namespace CustomDynamicArray
             {
                 this.array[i] = array[i];
             }
+
+            ActualNumberOfObjects = array.Length;
         }
 
         private void IncreaseCapacity(int multiplier = 2)
@@ -50,6 +70,37 @@ namespace CustomDynamicArray
             array = newArray;
 
             Capacity = array.Length;
+        }
+
+        private void SetCapacity(int newCapacity)
+        {
+
+            T[] newArray = new T[newCapacity];
+
+            if (newCapacity > Capacity)
+            {
+                for (int i = 0; i < array.Length; i++)
+                {
+                    newArray[i] = array[i];
+                }
+            }
+            else
+            {
+                for (int i = 0; i < newCapacity; i++)
+                {
+                    newArray[i] = array[i];
+                }
+            }
+
+            array = newArray;
+
+            Capacity = array.Length;
+
+            if (newCapacity < ActualNumberOfObjects)
+            {
+                ActualNumberOfObjects = newCapacity;
+            }
+
         }
 
         public void Add(T item)
@@ -186,20 +237,29 @@ namespace CustomDynamicArray
             {
                 Console.WriteLine($"[{i}] = {array[i]}");
             }
-            Console.WriteLine($"Capacity = {Capacity}, Lenght = {ActualNumberOfObjects}");
+            Console.WriteLine($"Capacity = {Capacity}, Length = {ActualNumberOfObjects}");
         }
 
-        public T this[int index] {
+        public T this[int index]
+        {
             get
             {
                 // Если значение меньше нуля или больше количества объектов, то бросаем exception
-                if (index < 0 || index > ActualNumberOfObjects)
+                if (index < -ActualNumberOfObjects || index > ActualNumberOfObjects)
                 {
-                    throw new IndexOutOfRangeException("Lol, you died!");
+                    throw new IndexOutOfRangeException("Неверный индекс!");
                 }
                 else
                 {
-                    return array[index];
+                    if (index < 0)
+                    {
+                        // + index т.к. index отрицательный
+                        return array[ActualNumberOfObjects + index];
+                    }
+                    else
+                    {
+                        return array[index];
+                    }
                 }
             }
 
@@ -227,37 +287,39 @@ namespace CustomDynamicArray
             return ((IEnumerable<T>)array).GetEnumerator();
         }
 
+        public object Clone()
+        {
+            return new DynamicArray<T>(array);
+        }
 
+        public T[] ToArray()
+        {
+            T[] newArray = new T[ActualNumberOfObjects];
+            for (int i = 0; i < ActualNumberOfObjects; i++)
+            {
+                newArray[i] = array[i];
+            }
 
-        //public char[] ToArray()
-        //{
-        //    char[] toReturn = new char[array.Length];
+            return newArray;
+        }
 
-        //    for (int i = 0; i < array.Length; i++)
-        //    {
-        //        toReturn[i] = array[i];
-        //    }
+        /* 
+         * 1. Доступ к элементам с конца при использовании отрицательного индекса (−1: последний, 
+         * −2: предпоследний и т.д.).
+         * 
+         * 2. Возможность ручного изменения значения Capacity с сохранением уцелевших данных 
+         * (данные за пределами новой Capacity сохранять не нужно).
+         * 
+         * 3. Реализовать интерфейс ICloneable для создания копии массива.
+         * 
+         * 4. Добавить метод ToArray, возвращающий новый массив (обычный), содержащий все 
+         * содержащиеся в текущем динамическом массиве объекты.
+         * 
+         * 5. Создать новый класс: циклический динамический массив (CycledDynamicArray) на основе 
+         * DynamicArray, отличающийся тем, что при использовании foreach после последнего 
+         * элемента должен снова идти первый и так по кругу.
+         */
 
-        //    return toReturn;
-        //}
-        //#endregion
-
-        //public char this[int index] {
-        //    get
-        //    {
-        //        if (index > array.Length || index < 0)
-        //            throw new IndexOutOfRangeException("Неверный индекс строки");
-        //        else
-        //            return array[index];
-        //    }
-        //    set
-        //    {
-        //        if (index > array.Length || index < 0)
-        //            throw new IndexOutOfRangeException("Неверный индекс строки");
-        //        else
-        //            array[index] = value;
-        //    }
-        //}
 
         //public override bool Equals(object obj)
         //{

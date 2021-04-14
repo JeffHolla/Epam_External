@@ -70,7 +70,45 @@ namespace Task_3_2_1
             //    Console.WriteLine($"Capacity = {test.Capacity}, Length = {test.Length}");
             //}
 
-            //test.AddRange(new int[] { -555, 7, 9, 8, 1, 15, 26, 8, 9, 10 });
+            test.AddRange(new int[] { -555, 7, 9, 8, 1, 15, 26, 8, 9, 10 });
+
+            for (int i = 0; i < 6; i++)
+            {
+                test.Add(i);
+                Console.WriteLine($"Capacity = {test.Capacity}, Length = {test.Length}");
+            }
+
+            test.PrintAll();
+
+            var clonnedArr = test.ToArray();
+            Console.WriteLine("====================\n====================\n====================");
+            for (int i = 0; i < clonnedArr.Length; i++)
+            {
+                Console.WriteLine($"[{i}] = {clonnedArr[i]}");
+            }
+
+            for (int i = 0; i < test.Length; i++)
+            {
+                test[i] = -42;
+            }
+            Console.WriteLine("=====================");
+            test.PrintAll();
+
+            Console.WriteLine("====================\n====================\n====================");
+            for (int i = 0; i < clonnedArr.Length; i++)
+            {
+                Console.WriteLine($"[{i}] = {clonnedArr[i]}");
+            }
+
+            //for (int i = 0; i < 32; i++)
+            //{
+            //    test.Capacity = 32 - i;
+            //    test.PrintAll();
+            //    Console.WriteLine("==================================");
+            //}
+
+            //test.Capacity = 500;
+
 
             //int[] lol = new int[70];
 
@@ -90,24 +128,28 @@ namespace Task_3_2_1
 
             //test.Remove();
 
-            test.PrintAll();
-            Console.WriteLine();
-
             //test.Remove(2);
             //test.RemoveAt(2);
             //test.Insert(555, 5);
             //test.Insert(23, 2);
             //test.Insert(45, 4);
-            
-            test.PrintAll();
-            Console.WriteLine();
 
-            for (int i = 0; i < test.Length; i++)
-            {
-                test[i] = -42;
-            }
-            Console.WriteLine();
-            
+            //test.PrintAll();
+            //Console.WriteLine();
+
+            //for (int i = 0; i < test.Length; i++)
+            //{
+            //    test[i] = -42;
+            //}
+
+            //for (int i = -test.Length; i < test.Length; i++)
+            //{
+            //    Console.WriteLine($"[{i}] = {test[i]}");
+            //}
+            //Console.WriteLine();
+
+            //test.PrintAll();
+
             Console.ReadKey();
         }
     }
