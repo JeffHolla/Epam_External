@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task_3_3_1_SuperArray", "Ta
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task_3_3_2_SuperString", "Task_3_3_2_SuperString\Task_3_3_2_SuperString.csproj", "{38C7ACF7-E32E-447F-A775-39E981DB873D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task_3_3_3_PizzaTime", "Task_3_3_3_PizzaTime\Task_3_3_3_PizzaTime.csproj", "{C2833E18-FABD-45FF-9818-511D8DF8BD28}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{38C7ACF7-E32E-447F-A775-39E981DB873D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{38C7ACF7-E32E-447F-A775-39E981DB873D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{38C7ACF7-E32E-447F-A775-39E981DB873D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2833E18-FABD-45FF-9818-511D8DF8BD28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2833E18-FABD-45FF-9818-511D8DF8BD28}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2833E18-FABD-45FF-9818-511D8DF8BD28}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2833E18-FABD-45FF-9818-511D8DF8BD28}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
