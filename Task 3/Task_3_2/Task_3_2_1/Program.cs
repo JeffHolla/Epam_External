@@ -60,26 +60,35 @@ namespace Task_3_2_1
     {
         static void Main(string[] args)
         {
+            Tests();
+
+            Console.ReadKey();
+        }
+
+        static void Tests()
+        {
             DynamicArray<int> test = new DynamicArray<int>();
 
+            // =======================================================
+            // Добавление множества элементов
             test.AddRange(new int[] { 7, 9, 4, 3, 2 });
 
+            // =======================================================
+            // Проверка Capacity при увеличении количества элементов
             //for (int i = 0; i < 6; i++)
             //{
             //    test.Add(i);
             //    Console.WriteLine($"Capacity = {test.Capacity}, Length = {test.Length}");
             //}
 
-            test.AddRange(new int[] { -555, 7, 9, 8, 1, 15, 26, 8, 9, 10 });
+            // =======================================================
+            // Добавление ещё бОльшего количества чисел и вывод на экран
+            //test.AddRange(new int[] { -555, 7, 9, 8, 1, 15, 26, 8, 9, 10 });
+            //test.PrintAll();
 
-            for (int i = 0; i < 6; i++)
-            {
-                test.Add(i);
-                Console.WriteLine($"Capacity = {test.Capacity}, Length = {test.Length}");
-            }
 
-            test.PrintAll();
-
+            // =======================================================
+            /* Проверка ToArray()
             var clonnedArr = test.ToArray();
             Console.WriteLine("====================\n====================\n====================");
             for (int i = 0; i < clonnedArr.Length; i++)
@@ -99,35 +108,21 @@ namespace Task_3_2_1
             {
                 Console.WriteLine($"[{i}] = {clonnedArr[i]}");
             }
+            */
 
+            // =======================================================
+            // Проверка уменьшения Capacity
             //for (int i = 0; i < 32; i++)
             //{
             //    test.Capacity = 32 - i;
             //    test.PrintAll();
             //    Console.WriteLine("==================================");
             //}
-
             //test.Capacity = 500;
 
 
-            //int[] lol = new int[70];
-
-            //for (int i = 0; i < 70; i++)
-            //{
-            //    //test.Add(i);
-            //    //Console.WriteLine($"Capacity = {test.Capacity}, Length = {test.Length}");
-            //    lol[i] = -i;
-            //}
-
-            //foreach (var item in test)
-            //{
-            //    Console.WriteLine(item);
-            //}
-
-            //test.AddRange(lol);
-
-            //test.Remove();
-
+            // =======================================================
+            // Удаление и вставка элементов
             //test.Remove(2);
             //test.RemoveAt(2);
             //test.Insert(555, 5);
@@ -137,11 +132,8 @@ namespace Task_3_2_1
             //test.PrintAll();
             //Console.WriteLine();
 
-            //for (int i = 0; i < test.Length; i++)
-            //{
-            //    test[i] = -42;
-            //}
-
+            // =======================================================
+            // Обратный и обычный индекс
             //for (int i = -test.Length; i < test.Length; i++)
             //{
             //    Console.WriteLine($"[{i}] = {test[i]}");
@@ -149,8 +141,6 @@ namespace Task_3_2_1
             //Console.WriteLine();
 
             //test.PrintAll();
-
-            Console.ReadKey();
         }
     }
 }
