@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CustomDynamicArray;
+using CustomCycledDynamicArray;
 
 /* Задание
  * На базе массива (именно массива, специфичные коллекции .NET не использовать) реализовать
@@ -60,8 +61,8 @@ namespace Task_3_2_1
     {
         static void Main(string[] args)
         {
-            Tests();
-
+            //Tests();
+            TestsOfCycledArray();
             Console.ReadKey();
         }
 
@@ -141,6 +142,26 @@ namespace Task_3_2_1
             //Console.WriteLine();
 
             //test.PrintAll();
+        }
+
+        static void TestsOfCycledArray()
+        {
+            CycledDynamicArray<int> test = new CycledDynamicArray<int>();
+            //DynamicArray<int> test = new DynamicArray<int>();
+            test.AddRange(new int[] { 7, 9, 4, 3, 2 });
+
+            // Можно просто зажать enter или любую другую клавишу, чтобы увидеть, что он циклический
+            // или просто убрать ReadKey)
+            int pos = 0;
+            foreach (var item in test)
+            {
+                if (pos % test.Length == 0)
+                {
+                    Console.WriteLine("=========================================");
+                }
+                Console.WriteLine($"[{pos++}] = {item}");
+                Console.ReadKey();
+            }
         }
     }
 }
