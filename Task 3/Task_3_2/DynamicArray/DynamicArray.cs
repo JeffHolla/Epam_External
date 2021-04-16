@@ -268,7 +268,7 @@ namespace CustomDynamicArray
                 // Если значение меньше нуля или больше количества объектов, то бросаем exception
                 if (index < 0 || index > ActualNumberOfObjects)
                 {
-                    throw new IndexOutOfRangeException("Lol, you died!");
+                    throw new IndexOutOfRangeException("Неверный индекс!");
                 }
                 else
                 {
@@ -277,14 +277,60 @@ namespace CustomDynamicArray
             }
         }
 
+        class DynamicArrayEnumerator : IEnumerator<T>
+        {
+            T[] array;
+            int length;
+            int position = -1;
+
+            public DynamicArrayEnumerator(T[] array, int length)
+            {
+                this.array = array;
+                this.length = length;
+            }
+
+            public T Current {
+                get
+                {
+                    if (position == -1)
+                    {
+                        throw new InvalidOperationException("Current position of Enumerator = -1!");
+                    }
+                    return array[position];
+                }
+            }
+
+            object IEnumerator.Current => throw new NotImplementedException();
+
+            public bool MoveNext()
+            {
+                if (position < length - 1)
+                {
+                    position += 1;
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+            public void Reset()
+            {
+                position = -1;
+            }
+
+            public void Dispose() { }
+        }
+
         public IEnumerator<T> GetEnumerator()
         {
-            return ((IEnumerable<T>)array).GetEnumerator();
+            return new DynamicArrayEnumerator(array, ActualNumberOfObjects);
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return ((IEnumerable<T>)array).GetEnumerator();
+            return new DynamicArrayEnumerator(array, ActualNumberOfObjects);
         }
 
         public object Clone()
@@ -302,89 +348,5 @@ namespace CustomDynamicArray
 
             return newArray;
         }
-
-        /* 
-         * 1. Доступ к элементам с конца при использовании отрицательного индекса (−1: последний, 
-         * −2: предпоследний и т.д.).
-         * 
-         * 2. Возможность ручного изменения значения Capacity с сохранением уцелевших данных 
-         * (данные за пределами новой Capacity сохранять не нужно).
-         * 
-         * 3. Реализовать интерфейс ICloneable для создания копии массива.
-         * 
-         * 4. Добавить метод ToArray, возвращающий новый массив (обычный), содержащий все 
-         * содержащиеся в текущем динамическом массиве объекты.
-         * 
-         * 5. Создать новый класс: циклический динамический массив (CycledDynamicArray) на основе 
-         * DynamicArray, отличающийся тем, что при использовании foreach после последнего 
-         * элемента должен снова идти первый и так по кругу.
-         */
-
-
-        //public override bool Equals(object obj)
-        //{
-        //    if (obj == null)
-        //        return false;
-
-        //    CustomString custStr = obj as CustomString;
-        //    if (custStr is null)
-        //        return false;
-
-        //    return this == custStr;
-        //}
-
-        //public override string ToString()
-        //{
-        //    return new string(array);
-        //}
-
-        //#region Operators
-        //private static bool IsEqual(CustomString str1, CustomString str2)
-        //{
-        //    bool isEqual = true;
-
-        //    for (int i = 0; i < str1.Length; i++)
-        //    {
-        //        if (str1[i] != str2[i])
-        //            isEqual = false;
-        //    }
-
-        //    return isEqual;
-        //}
-
-        //public static bool operator ==(CustomString str1, CustomString str2)
-        //{
-        //    if (str1.Length != str2.Length)
-        //        return false;
-
-        //    return IsEqual(str1, str2);
-        //}
-
-        //public static bool operator !=(CustomString str1, CustomString str2)
-        //{
-        //    if (str1.Length != str2.Length)
-        //        return true;
-
-        //    return IsEqual(str1, str2) ? false : true;
-        //}
-
-        //public static CustomString operator +(CustomString str1, CustomString str2)
-        //{
-        //    char[] tmpStr = new char[str1.Length + str2.Length];
-
-        //    int currIndex = 0;
-
-        //    for (int i = 0; i < str1.Length; i++, currIndex++)
-        //    {
-        //        tmpStr[currIndex] = str1[i];
-        //    }
-
-        //    for (int i = 0; i < str2.Length; i++, currIndex++)
-        //    {
-        //        tmpStr[currIndex] = str2[i];
-        //    }
-
-        //    return new CustomString(tmpStr);
-        //}
     }
 }
