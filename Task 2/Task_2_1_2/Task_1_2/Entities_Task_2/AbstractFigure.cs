@@ -9,6 +9,8 @@ namespace Task_1_2.Entities_Task_2
 
         public abstract double Area { get; }
 
+        public override string Properties { get { return $"Perimeter = {Perimeter}, Area = {Area}"; } }
+
         public AbstractFigure(Point center)
         {
             Center = center;

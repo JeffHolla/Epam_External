@@ -7,6 +7,7 @@ namespace Task_1_2.Entities_Task_2
         public double Y { get; }
 
         public override string Name { get { return "Point"; } }
+        public override string Properties { get { return $"X = {X}, Y = {Y}"; } }
 
         public Point(double x, double y)
         {
@@ -48,6 +49,11 @@ namespace Task_1_2.Entities_Task_2
             }
 
             return point.X != otherPoint.X || point.Y != otherPoint.Y;
+        }
+
+        public override string ToString()
+        {
+            return $"X = {X}, Y = {Y}";
         }
     }
 }

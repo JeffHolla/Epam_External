@@ -79,7 +79,7 @@ namespace Task_1_2
         {
             foreach (var shape in userShapesPairs[user])
             {
-                Console.WriteLine(shape.Name);
+                Console.WriteLine($"Свойства {shape.Name} - {shape.Properties}");
             }
         }
 

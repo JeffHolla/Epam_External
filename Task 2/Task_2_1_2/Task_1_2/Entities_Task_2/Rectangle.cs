@@ -6,6 +6,20 @@ namespace Task_1_2.Entities_Task_2
         public double Height { get; }
         public double Width { get; }
 
+        public override double Perimeter {
+            get
+            {
+                return 2 * Height + 2 * Width;
+            }
+        }
+
+        public override double Area {
+            get
+            {
+                return Height * Width;
+            }
+        }
+
         public override string Name { get { return "Rectangle"; } }
 
         public Rectangle(Point center, double sideLength) : base(center)
@@ -32,18 +46,6 @@ namespace Task_1_2.Entities_Task_2
         public Rectangle(double x_center, double y_center, double height, double width) : this(x_center, y_center, height)
         {
             Width = width;
-        }
-
-        public override double Perimeter {
-            get {
-                return 2 * Height + 2 * Width;
-            }
-        }
-
-        public override double Area {
-            get {
-                return Height * Width;
-            }
         }
     }
 }

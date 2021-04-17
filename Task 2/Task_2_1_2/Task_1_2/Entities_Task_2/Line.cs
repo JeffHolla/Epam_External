@@ -10,6 +10,7 @@ namespace Task_1_2.Entities_Task_2
         public double Length { get; }
 
         public override string Name { get { return "Line"; } }
+        public override string Properties { get { return $"FirstPoint -> {StartPoint}, SecondPoint -> {EndPoint}"; } }
 
         public Line(double x1, double y1, double x2, double y2)
         {
