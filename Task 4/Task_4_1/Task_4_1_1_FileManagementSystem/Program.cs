@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 /*
  * Дана папка, которая является хранилищем файлов.
@@ -33,183 +32,82 @@ namespace Task_4_1_1_FileManagementSystem
     {
         static void Main(string[] args)
         {
-            LoggingState loggingState = new LoggingState();
+            LoggingStateUpdate loggingState = new LoggingStateUpdate();
 
             loggingState.StartLogging();
 
+            DateTime dateTime = DateTime.Parse("19.04.2021 3:23:34");
 
-            //string copyFilesPath = @"..\..\ToStore\filesCopy";
-            //string filesPath = @"..\..\ToStore";
+            Console.WriteLine(dateTime);
 
-            //DirectoryInfo directory = new DirectoryInfo(filesPath);
+            RestoreBackupedFiles restoreBackupedFiles = new RestoreBackupedFiles();
 
-            //var tmp = directory.GetFiles();
-            //string destPath = $@"{copyFilesPath}\{}";
-            //string sourcePath = $"{filesPath}\\test.txt";
-            //File.Copy(sourcePath, destPath);
+            restoreBackupedFiles.StartRestoring(dateTime);
 
             Console.ReadKey();
         }
     }
 
-    public class LoggingState
+    public class RestoreBackupedFiles
     {
-        string filesPath = @"..\..\ToStore";
-        string copyFilesPath = @"..\..\ToStore\filesCopy";
+        string filesPath = @"..\..\StoringFolder\ToStore";
+        string copyFilesPath = @"..\..\StoringFolder\SystemInformation\filesCopy";
         DirectoryInfo filesDirectory;
         DirectoryInfo copyFilesDirectory;
-        FileInfo[] files;
+        //FileInfo[] files;
+        DirectoryInfo[] dirs;
 
-        public LoggingState()
+        public RestoreBackupedFiles()
         {
             filesDirectory = new DirectoryInfo(filesPath);
             copyFilesDirectory = new DirectoryInfo(copyFilesPath);
-            files = filesDirectory.GetFiles();
+            dirs = copyFilesDirectory.GetDirectories();
         }
 
-        public void StartLogging()
+        public void StartRestoring(DateTime dateTime)
         {
-            StateChecker()/*.Wait()*/;
+            StringBuilder dateBuilder = new StringBuilder();
 
-            Console.WriteLine("HEY!");
-            Console.ReadKey();
-        }
-
-        public /*Task */ void StateChecker()
-        {
-            Task[] tasksList = new Task[filesDirectory.GetFiles().Length];
-
-            while (true)
+            foreach (var dir in dirs)
             {
-                for (int i = 0; i < files.Length; i++)
+                var allFiles = dir.GetFiles();
+
+                if (allFiles.Length == 0)
                 {
-                    foreach (var file in filesDirectory.GetFiles())
-                    {
-                        if (files[i].Name == file.Name)
-                        {
-                            if (files[i].LastWriteTime != file.LastWriteTime)
-                            {
-                                // Так они сразу вызываются, что логично
-                                //tasksList.Add(CopyNewStateFile(files[i]));
-
-                                //var tsk = new Task(async () => await CopyNewStateFile(files[i]));
-                                //tasksList[i] = (Task.Run(() => CopyNewStateFile(files[i])));
-
-                                Task.Run(() => CopyNewStateFile(files[i])).Wait();
-
-                                files[i] = file;
-                            }
-                        }
-                    }
+                    continue;
                 }
-                //Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!");
-                //Console.WriteLine("== Starting tasks ==");
-                //Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!");
-                //Console.WriteLine();
 
-                
-                //for (int i = 0; i < tasksList.Count; i++)
-                //{
-                //    //Console.WriteLine();
-                //    //Console.WriteLine(tasksList[i].AsyncState);
-                //    //Console.WriteLine(tasksList[i].CreationOptions);
-                //    //Console.WriteLine(tasksList[i].Status);
-                //    //Console.WriteLine(tasksList[i].Id);
-                //    //Console.WriteLine();
+                var metaFiles = allFiles.Where(x => x.Name[0] == '.').ToList();
+                var realFiles = allFiles.Where(x => x.Name[0] != '.').ToList();
 
-                //    tasksList[i].Start();
-                //}
+                string fileName = realFiles[0].Name.Substring(0, realFiles[0].Name.LastIndexOf("_"));
 
-                //Console.WriteLine(status);
+                Dictionary<FileInfo, string> filePathPair = new Dictionary<FileInfo, string>();
+                //var dict = metaFiles.ToLookup(x => x, y => y.OpenText().ReadToEnd().Split()[1]).ToDictionary(x => x, y => y);
 
-                StartAsync(ref tasksList);
-
-                //WaiterSelf(1, tasksList).Wait();
-
-                //WaiterSelf(3).Wait();
-
-                //await Task.Delay(3 * 1000);
-            }
-        }
-        public void StartAsync(ref Task[] tasks)
-        {
-            for (int i = 0; i < tasks.Length; i++)
-            {
-                if (tasks[i] is null)
-                    return;
-            }
-            try
-            {
-                while (true)
+                // Я максимально пытался избегать потоков и чтения из файлов. Это достаточно долго, если я не ошибаюсь)
+                // Но, похоже, без мета информации достаточно сложно что-то сделать
+                // А Byte[] расшифровки не особо лучше
+                for (int i = 0; i < realFiles.Count; i++)
                 {
-                    for (int i = 0; i < tasks.Length; i++)
-                    {
-                        Console.WriteLine(tasks[i].AsyncState);
-                        Console.WriteLine(tasks[i].CreationOptions);
-                        Console.WriteLine(tasks[i].Status);
-                        Console.WriteLine(tasks[i].Id);
-                        Console.WriteLine();
-                    }
-                    Console.WriteLine("!!!!!!!!!!!!!!!!!");
-                    Console.WriteLine();
+                    string fullFileName = realFiles[i].Name.Replace(".txt", "");
+
+                    string str1 = $"{fullFileName.Substring(0, fullFileName.LastIndexOf("_"))}";
+
+                    Console.WriteLine(fullFileName.LastIndexOf(" ") + " " + fullFileName.Length);
+
+                    string dateWithTime = fullFileName.Substring(fullFileName.LastIndexOf("_") + 1, fullFileName.Length - 1 - fullFileName.LastIndexOf("_"));
+
+                    string time = $"{fullFileName.Substring(fullFileName.LastIndexOf(" ") + 1, fullFileName.Length - 1 - fullFileName.LastIndexOf(" "))}";
+
+                    dateBuilder.Append(time);
+
+                    dateBuilder.Insert(time.Length - 2, ":");
+                    dateBuilder.Insert(time.Length - 4, ":");
+
+
                 }
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
-        public async Task WaiterSelf(int i, List<Task> tasks)
-        {
-            Task.WaitAll(tasks.ToArray());
-
-            Console.WriteLine(i);
-
-            await Task.Delay(i * 1000);
-
-            Console.WriteLine("Waited");
-        }
-
-        public Task /*void*/ CopyNewStateFile(FileInfo file)
-        {
-            Console.WriteLine($"!!! Trying to copy {file.Name} !!!");
-
-            string justFileName = file.Name.Replace(".txt", "");
-            string directoryPath = $@"{copyFilesDirectory.FullName}\{justFileName}";
-            string fileNameWithDate = $"{justFileName}_{file.LastWriteTime.ToString().Replace(":", "!")}.txt";
-            //Console.WriteLine(string.IsInterned(directoryPath) ?? "Неа");
-            string.Intern(directoryPath);
-
-            if (!Directory.Exists(directoryPath))
-            {
-                Directory.CreateDirectory(directoryPath);
-            }
-
-            Stopwatch.StartNew();
-
-            File.Copy(file.FullName, directoryPath + $"\\{fileNameWithDate}", true);
-
-            Console.WriteLine(Stopwatch.Frequency);
-
-            Console.WriteLine("===================================");
-            Console.WriteLine($"File \"{file.Name}\" was backuped with name -> \"{fileNameWithDate}\"!");
-            Console.WriteLine("===================================");
-            Console.WriteLine();
-
-            return Task.CompletedTask;
         }
     }
-
-    //while (true)
-    //{
-    //    Console.WriteLine("=============================");
-    //    files.AsParallel().ForAll(x => x.Refresh());
-    //    foreach (var file in files)
-    //    {
-    //        Console.WriteLine($"{file} -> {file.Length}");
-    //    }
-
-    //    //Console.ReadKey();
-    //}
 }
