@@ -29,10 +29,13 @@ namespace Task_4_1_1_FileManagementSystem
 {
     public class LoggingStateUpdate
     {
+        // Пути, нужные для работы программы
         string filesPath = @"..\..\StoringFolder\ToStore";
         string copyFilesPath = @"..\..\StoringFolder\SystemInformation\filesCopy";
+        // Экземпляры классов для директорий
         DirectoryInfo filesDirectory;
         DirectoryInfo copyFilesDirectory;
+        // Все файлы из директорий
         FileInfo[] files;
 
         public LoggingStateUpdate()
@@ -50,16 +53,20 @@ namespace Task_4_1_1_FileManagementSystem
             Console.ReadKey();
         }
 
+        // Пока что не async
         public /*Task */ void StateChecker()
         {
+            // Массив для хранения Тасков? Есть ли вообще смысл запускать их все одновременно?
+            // Как работает ожидание всех Тасков?
             //Task[] tasksList = new Task[filesDirectory.GetFiles().Length];
             List<Task> tasksList = new List<Task>();
 
+            // Стоит ли каждый раз пересобирать все файлы?
+            // Или отдать на откуп пользователя, чтобы он мог обновлять по своему желанию
             //files = filesDirectory.GetFiles("*.txt", SearchOption.AllDirectories);
 
             while (true)
             {
-
                 // Чтобы не триггерить ядро процессора
                 Task.Delay(50).Wait();
                 for (int i = 0; i < files.Length; i++)
@@ -72,60 +79,55 @@ namespace Task_4_1_1_FileManagementSystem
                             {
                                 // Так они сразу вызываются, что логично
                                 tasksList.Add(CopyNewStateFile(files[i]));
-
-                                //var tsk = new Task(async () => await CopyNewStateFile(files[i]));
-                                //tasksList.Add(tsk);
-                                //tasksList[i] = (Task.Run(() => CopyNewStateFile(files[i])));
-
-                                //Task.Run(() => CopyNewStateFile(files[i])).Wait();
-
-                                //Task.Run(async () => await CopyNewStateFile(files[i]));
-
-
+                                
                                 files[i] = file;
                             }
                         }
                     }
                 }
                 
+                // Ждём когда все таски выполнятся
                 //Task.WhenAll(tasksList).Wait(5000);
                 Console.WriteLine(DateTime.Now.ToLongTimeString());
 
 
                 // Блок дополнения файлов
                 //Task.Delay(30000).Wait();
-                //Process.Start(@"..\..\StoringFolder\ScriptsBat\AddOneLine.bat");
+                //Process.Start(@"..\..\StoringFolder\ScriptsBat\AddOneLine_RecursiveDir.bat");
 
                 //await Task.Delay(3 * 1000);
             }
         }
 
-        public async Task WaiterSelf(int i, List<Task> tasks)
+        // Работающий ожидатель
+        public async Task WaiterSelf(int i)
         {
-            Task.WaitAll(tasks.ToArray());
-
-            Console.WriteLine(i);
-
             await Task.Delay(i * 1000);
-
-            Console.WriteLine("Waited");
+            Console.WriteLine($"Waited [{i}]");
         }
 
+        // Функция копирования файлов
+        // Возможно, что стоит функцию копии и метаИнфы разделить на две таски и раскидать в них словари путей и имён
         public Task /*void*/ CopyNewStateFile(FileInfo file)
         {
             Console.WriteLine($"!!! Trying to copy {file.Name} !!!");
 
+            // Вытаскиваем имя файла без txt
             string justFileName = file.Name.Replace(".txt", "");
             string directoryPath = $@"{copyFilesDirectory.FullName}\{justFileName}";
             string fileNameWithDate = $"{justFileName}_{file.LastWriteTime.ToString().Replace(":", "!")}.txt";
+            
+            // Интернируем строку, т.к. пользоваться ей мы будем много
             //Console.WriteLine(string.IsInterned(directoryPath) ?? "Неа");
             string.Intern(directoryPath);
 
+            // Если путь не существует, то создаём новый
             if (!Directory.Exists(directoryPath))
             {
                 Directory.CreateDirectory(directoryPath);
             }
 
+            // Копируем файл в путь
             File.Copy(file.FullName, directoryPath + $"\\{fileNameWithDate}", true);
 
             Console.WriteLine("===================================");
@@ -133,18 +135,26 @@ namespace Task_4_1_1_FileManagementSystem
             Console.WriteLine("===================================");
             Console.WriteLine();
 
+            // Создаём для него МетаИнфу и ждём окончания
             CreateMetaInformationForFile(file).Wait();
 
             return Task.CompletedTask;
         }
 
+        // Функция создания метаИнфы
+        // Возможно, что стоит функцию копии и метаИнфы разделить на две таски и раскидать в них словари путей и имён
         public Task CreateMetaInformationForFile(FileInfo file)
         {
             string justFileName = file.Name.Replace(".txt", "");
             string directoryPath = $@"{copyFilesDirectory.FullName}\{justFileName}";
             string fileNameWithDate = $".{justFileName}_{file.LastWriteTime.ToString().Replace(":", "!")}";
+            // Интернируем строку, т.к. пользоваться ей мы будем много
             string.Intern(directoryPath);
 
+            // Создаём файл МетаИнфы и записываем 
+            // - Полный путь с файлом
+            // - Полный путь без файла
+            // - Время изменения файла
             File.Create(directoryPath + $"\\{fileNameWithDate}").Close();
             using (StreamWriter stream = new StreamWriter(directoryPath + $"\\{fileNameWithDate}", false))
             {
