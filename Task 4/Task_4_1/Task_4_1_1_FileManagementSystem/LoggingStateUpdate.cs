@@ -54,8 +54,12 @@ namespace Task_4_1_1_FileManagementSystem
         {
             //Task[] tasksList = new Task[filesDirectory.GetFiles().Length];
             List<Task> tasksList = new List<Task>();
+
+            //files = filesDirectory.GetFiles("*.txt", SearchOption.AllDirectories);
+
             while (true)
             {
+
                 // Чтобы не триггерить ядро процессора
                 Task.Delay(50).Wait();
                 for (int i = 0; i < files.Length; i++)
@@ -83,47 +87,14 @@ namespace Task_4_1_1_FileManagementSystem
                         }
                     }
                 }
-                //Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!");
-                //Console.WriteLine("== Starting tasks ==");
-                //Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!");
-                //Console.WriteLine();
-
-
-                //List<bool> lst = new List<bool>();
-                //while (true)
-                //{
-                //    for (int i = 0; i < tasksList.Count; i++)
-                //    {
-                //        //Console.WriteLine(tasksList[i].AsyncState);
-                //        //Console.WriteLine(tasksList[i].CreationOptions);
-                //        Console.WriteLine(tasksList[i].Status);
-                //        //Console.WriteLine(tasksList[i].Id);
-
-                //        if (tasksList[i].IsCanceled || tasksList[i].IsFaulted)
-                //        {
-                //            lst.Add(false);
-                //        }
-
-                //        if (tasksList[i].IsCompleted)
-                //        {
-                //            lst.Add(true);
-                //        }
-                //    }
-
-                //    if (!lst.Contains(false) && lst.Count(x => x == true) == tasksList.Count)
-                //    {
-                //        tasksList.Clear();
-                //        break;
-                //    }
-                //}
-
-                Task.WhenAll(tasksList).Wait(5000);
+                
+                //Task.WhenAll(tasksList).Wait(5000);
                 Console.WriteLine(DateTime.Now.ToLongTimeString());
 
 
                 // Блок дополнения файлов
-                Task.Delay(30000).Wait();
-                Process.Start(@"..\..\StoringFolder\ScriptsBat\AddOneLine.bat");
+                //Task.Delay(30000).Wait();
+                //Process.Start(@"..\..\StoringFolder\ScriptsBat\AddOneLine.bat");
 
                 //await Task.Delay(3 * 1000);
             }
