@@ -34,11 +34,11 @@ namespace Task_4_1_1_FileManagementSystem
         {
             LoggingStateUpdate loggingState = new LoggingStateUpdate();
 
-            loggingState.StartLogging();
+            //loggingState.StartLogging();
 
-            DateTime dateTime = DateTime.Parse("19.04.2021 3:23:34");
+            DateTime dateTime = DateTime.Parse("19.04.2021 19:59:27");
 
-            Console.WriteLine(dateTime);
+            //Console.WriteLine(dateTime);
 
             RestoreBackupedFiles restoreBackupedFiles = new RestoreBackupedFiles();
 
@@ -64,10 +64,8 @@ namespace Task_4_1_1_FileManagementSystem
             dirs = copyFilesDirectory.GetDirectories();
         }
 
-        public void StartRestoring(DateTime dateTime)
+        public void StartRestoring(DateTime userDateTime)
         {
-            StringBuilder dateBuilder = new StringBuilder();
-
             foreach (var dir in dirs)
             {
                 var allFiles = dir.GetFiles();
@@ -80,34 +78,44 @@ namespace Task_4_1_1_FileManagementSystem
                 var metaFiles = allFiles.Where(x => x.Name[0] == '.').ToList();
                 var realFiles = allFiles.Where(x => x.Name[0] != '.').ToList();
 
-                string fileName = realFiles[0].Name.Substring(0, realFiles[0].Name.LastIndexOf("_"));
-
-                Dictionary<FileInfo, string> filePathPair = new Dictionary<FileInfo, string>();
-                //var dict = metaFiles.ToLookup(x => x, y => y.OpenText().ReadToEnd().Split()[1]).ToDictionary(x => x, y => y);
-
-                // Я максимально пытался избегать потоков и чтения из файлов. Это достаточно долго, если я не ошибаюсь)
-                // Но, похоже, без мета информации достаточно сложно что-то сделать
-                // А Byte[] расшифровки не особо лучше
-                for (int i = 0; i < realFiles.Count; i++)
+                for (int i = realFiles.Count - 1; i >= 0; i--)
                 {
                     string fullFileName = realFiles[i].Name.Replace(".txt", "");
 
                     string str1 = $"{fullFileName.Substring(0, fullFileName.LastIndexOf("_"))}";
 
-                    Console.WriteLine(fullFileName.LastIndexOf(" ") + " " + fullFileName.Length);
+                    //Console.WriteLine(fullFileName.LastIndexOf(" ") + " " + fullFileName.Length);
 
-                    string dateWithTime = fullFileName.Substring(fullFileName.LastIndexOf("_") + 1, fullFileName.Length - 1 - fullFileName.LastIndexOf("_"));
+                    string dateWithTime = fullFileName.
+                        Substring(fullFileName.LastIndexOf("_") + 1, fullFileName.Length - 1 - fullFileName.LastIndexOf("_")).
+                        Replace("!", ":");
 
-                    string time = $"{fullFileName.Substring(fullFileName.LastIndexOf(" ") + 1, fullFileName.Length - 1 - fullFileName.LastIndexOf(" "))}";
+                    DateTime fileDateTime = DateTime.Parse(dateWithTime);
 
-                    dateBuilder.Append(time);
+                    if(fileDateTime <= userDateTime)
+                    {
+                        var metaFileForCurrentFile = metaFiles.Where(file => fullFileName.Insert(0, ".") == file.Name).First();
+                        FileRestore(realFiles[i], metaFileForCurrentFile);
 
-                    dateBuilder.Insert(time.Length - 2, ":");
-                    dateBuilder.Insert(time.Length - 4, ":");
-
-
+                        break;
+                    }
                 }
             }
+        }
+
+        public void FileRestore(FileInfo fileToRestore, FileInfo metaInformation)
+        {
+            string filePathToRestore = "";
+            string dirPathToRestore = "";
+            using(StreamReader reader = new StreamReader(metaInformation.FullName))
+            {
+                filePathToRestore = reader.ReadLine();
+                dirPathToRestore = reader.ReadLine();
+            }
+
+            Directory.CreateDirectory(dirPathToRestore);
+            File.Copy(fileToRestore.FullName, filePathToRestore, true);
+
         }
     }
 }

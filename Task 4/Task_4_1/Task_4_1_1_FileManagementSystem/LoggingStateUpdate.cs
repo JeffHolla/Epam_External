@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -117,6 +118,12 @@ namespace Task_4_1_1_FileManagementSystem
                 //}
 
                 Task.WhenAll(tasksList).Wait(5000);
+                Console.WriteLine(DateTime.Now.ToLongTimeString());
+
+
+                // Блок дополнения файлов
+                Task.Delay(30000).Wait();
+                Process.Start(@"..\..\StoringFolder\ScriptsBat\AddOneLine.bat");
 
                 //await Task.Delay(3 * 1000);
             }
@@ -139,7 +146,7 @@ namespace Task_4_1_1_FileManagementSystem
 
             string justFileName = file.Name.Replace(".txt", "");
             string directoryPath = $@"{copyFilesDirectory.FullName}\{justFileName}";
-            string fileNameWithDate = $"{justFileName}_{file.LastWriteTime.ToString().Replace(":", "")}.txt";
+            string fileNameWithDate = $"{justFileName}_{file.LastWriteTime.ToString().Replace(":", "!")}.txt";
             //Console.WriteLine(string.IsInterned(directoryPath) ?? "Неа");
             string.Intern(directoryPath);
 
@@ -164,7 +171,8 @@ namespace Task_4_1_1_FileManagementSystem
         {
             string justFileName = file.Name.Replace(".txt", "");
             string directoryPath = $@"{copyFilesDirectory.FullName}\{justFileName}";
-            string fileNameWithDate = $".{justFileName}_{file.LastWriteTime.ToString().Replace("!", "")}";
+            string fileNameWithDate = $".{justFileName}_{file.LastWriteTime.ToString().Replace(":", "!")}";
+            string.Intern(directoryPath);
 
             File.Create(directoryPath + $"\\{fileNameWithDate}").Close();
             using (StreamWriter stream = new StreamWriter(directoryPath + $"\\{fileNameWithDate}", false))
