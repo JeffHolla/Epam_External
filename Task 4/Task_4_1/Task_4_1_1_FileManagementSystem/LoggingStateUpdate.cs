@@ -30,19 +30,19 @@ namespace Task_4_1_1_FileManagementSystem
     public class LoggingStateUpdate
     {
         // Пути, нужные для работы программы
-        string filesPath = @"..\..\StoringFolder\ToStore";
-        string copyFilesPath = @"..\..\StoringFolder\SystemInformation\filesCopy";
+        string _filesPath = @"..\..\StoringFolder\ToStore";
+        string _copyFilesPath = @"..\..\StoringFolder\SystemInformation\filesCopy";
         // Экземпляры классов для директорий
-        DirectoryInfo filesDirectory;
-        DirectoryInfo copyFilesDirectory;
+        DirectoryInfo _filesDirectory;
+        DirectoryInfo _copyFilesDirectory;
         // Все файлы из директорий
-        FileInfo[] files;
+        FileInfo[] _files;
 
         public LoggingStateUpdate()
         {
-            filesDirectory = new DirectoryInfo(filesPath);
-            copyFilesDirectory = new DirectoryInfo(copyFilesPath);
-            files = filesDirectory.GetFiles("*.txt", SearchOption.AllDirectories);
+            _filesDirectory = new DirectoryInfo(_filesPath);
+            _copyFilesDirectory = new DirectoryInfo(_copyFilesPath);
+            _files = _filesDirectory.GetFiles("*.txt", SearchOption.AllDirectories);
         }
 
         public void StartLogging()
@@ -69,25 +69,24 @@ namespace Task_4_1_1_FileManagementSystem
             {
                 // Чтобы не триггерить ядро процессора
                 Task.Delay(50).Wait();
-                for (int i = 0; i < files.Length; i++)
+                for (int i = 0; i < _files.Length; i++)
                 {
-                    foreach (var file in filesDirectory.GetFiles("*.txt", SearchOption.AllDirectories))
+                    foreach (var file in _filesDirectory.GetFiles("*.txt", SearchOption.AllDirectories))
                     {
-                        if (files[i].Name == file.Name)
+                        if (_files[i].Name == file.Name && _files[i].FullName == file.FullName)
                         {
-                            if (files[i].LastWriteTime != file.LastWriteTime)
+                            if (_files[i].LastWriteTime != file.LastWriteTime)
                             {
                                 // Так они сразу вызываются, что логично
-                                tasksList.Add(CopyNewStateFile(files[i]));
-                                
-                                files[i] = file;
+                                // TODO: Переделать под потоки
+                                tasksList.Add(CopyNewStateFile(_files[i]));
+
+                                _files[i] = file;
                             }
                         }
                     }
                 }
-                
-                // Ждём когда все таски выполнятся
-                //Task.WhenAll(tasksList).Wait(5000);
+
                 Console.WriteLine(DateTime.Now.ToLongTimeString());
 
 
@@ -106,6 +105,33 @@ namespace Task_4_1_1_FileManagementSystem
             Console.WriteLine($"Waited [{i}]");
         }
 
+        public void StartCreatingBackup(FileInfo file)
+        {
+            // Вытаскиваем имя файла без txt
+            string justFileName = file.Name.Replace(".txt", "");
+
+            // Получаем полный путь для папки файла
+            string directoryPath;
+            if (file.DirectoryName != _filesDirectory.FullName)
+            {
+                directoryPath = $"{_copyFilesDirectory.FullName}\\" +
+                    $"{file.DirectoryName.Substring(_filesDirectory.FullName.Length + 1)}";
+            }
+            else
+            {
+                directoryPath = $"{_copyFilesDirectory.FullName}\\.rootDir";
+            }
+            directoryPath += $"\\{justFileName}__file";
+
+
+            string fileNameWithDate = $"{justFileName}_{file.LastWriteTime.ToString().Replace(":", "!")}.txt";
+
+            // Интернируем строку, т.к. пользоваться ей мы будем много
+            //Console.WriteLine(string.IsInterned(directoryPath) ?? "Неа");
+            string.Intern(directoryPath);
+
+        }
+
         // Функция копирования файлов
         // Возможно, что стоит функцию копии и метаИнфы разделить на две таски и раскидать в них словари путей и имён
         public Task /*void*/ CopyNewStateFile(FileInfo file)
@@ -114,12 +140,27 @@ namespace Task_4_1_1_FileManagementSystem
 
             // Вытаскиваем имя файла без txt
             string justFileName = file.Name.Replace(".txt", "");
-            string directoryPath = $@"{copyFilesDirectory.FullName}\{justFileName}";
+
+            // Получаем полный путь для папки файла
+            string directoryPath;
+            if (file.DirectoryName != _filesDirectory.FullName)
+            {
+                directoryPath = $"{_copyFilesDirectory.FullName}\\" +
+                    $"{file.DirectoryName.Substring(_filesDirectory.FullName.Length + 1)}";
+            }
+            else
+            {
+                directoryPath = $"{_copyFilesDirectory.FullName}\\.rootDir";
+            }
+            directoryPath += $"\\{justFileName}__fileInfo";
+
+
             string fileNameWithDate = $"{justFileName}_{file.LastWriteTime.ToString().Replace(":", "!")}.txt";
-            
+
             // Интернируем строку, т.к. пользоваться ей мы будем много
             //Console.WriteLine(string.IsInterned(directoryPath) ?? "Неа");
             string.Intern(directoryPath);
+
 
             // Если путь не существует, то создаём новый
             if (!Directory.Exists(directoryPath))
@@ -146,7 +187,20 @@ namespace Task_4_1_1_FileManagementSystem
         public Task CreateMetaInformationForFile(FileInfo file)
         {
             string justFileName = file.Name.Replace(".txt", "");
-            string directoryPath = $@"{copyFilesDirectory.FullName}\{justFileName}";
+            //string directoryPath = $@"{_copyFilesDirectory.FullName}\{justFileName}";
+
+            string directoryPath;
+            if (file.DirectoryName != _filesDirectory.FullName)
+            {
+                directoryPath = $"{_copyFilesDirectory.FullName}\\" +
+                    $"{file.DirectoryName.Substring(_filesDirectory.FullName.Length + 1)}";
+            }
+            else
+            {
+                directoryPath = $"{_copyFilesDirectory.FullName}\\.rootDir";
+            }
+            directoryPath += $"\\{justFileName}__File";
+
             string fileNameWithDate = $".{justFileName}_{file.LastWriteTime.ToString().Replace(":", "!")}";
             // Интернируем строку, т.к. пользоваться ей мы будем много
             string.Intern(directoryPath);
