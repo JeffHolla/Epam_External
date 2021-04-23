@@ -1,7 +1,0 @@
-C:\Users\Денис\source\repos\Epam_External\Task 1\Task_1\Task_1\bin\Debug\Task_1.exe.config
-C:\Users\Денис\source\repos\Epam_External\Task 1\Task_1\Task_1\bin\Debug\Task_1.exe
-C:\Users\Денис\source\repos\Epam_External\Task 1\Task_1\Task_1\bin\Debug\Task_1.pdb
-C:\Users\Денис\source\repos\Epam_External\Task 1\Task_1\Task_1\obj\Debug\Task_1.csprojAssemblyReference.cache
-C:\Users\Денис\source\repos\Epam_External\Task 1\Task_1\Task_1\obj\Debug\Task_1.csproj.CoreCompileInputs.cache
-C:\Users\Денис\source\repos\Epam_External\Task 1\Task_1\Task_1\obj\Debug\Task_1.exe
-C:\Users\Денис\source\repos\Epam_External\Task 1\Task_1\Task_1\obj\Debug\Task_1.pdb
