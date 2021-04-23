@@ -46,6 +46,7 @@
     <Compile Include="LoggingStateUpdate.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RestoreBackupedFiles.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
