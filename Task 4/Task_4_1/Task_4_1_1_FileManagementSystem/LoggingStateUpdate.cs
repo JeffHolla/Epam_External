@@ -31,7 +31,6 @@ namespace Task_4_1_1_FileManagementSystem
 {
     public class LoggingStateUpdate
     {
-        List<Thread> myThreads = new List<Thread>();
         // Пути, нужные для работы программы
         string _filesPath = @"..\..\StoringFolder\ToStore";
         string _copyFilesPath = @"..\..\StoringFolder\SystemInformation\filesCopy";
@@ -50,28 +49,27 @@ namespace Task_4_1_1_FileManagementSystem
 
         public void StartLogging()
         {
-            StateChecker()/*.Wait()*/;
-
-            Console.WriteLine("HEY!");
-            Console.ReadKey();
+            StateChecker();
         }
 
-        // Пока что не async
-        public /*Task */ void StateChecker()
+        //Вспомогательная функция для проверки логов -> Добавляет одну строчку к каждому файлу в store директории каждые seconds
+        public void AddLineToAllFiles(int seconds)
         {
-            // Массив для хранения Тасков? Есть ли вообще смысл запускать их все одновременно?
-            // Как работает ожидание всех Тасков?
-            //Task[] tasksList = new Task[filesDirectory.GetFiles().Length];
-            List<Task> tasksList = new List<Task>();
+            // Блок дополнения файлов
+            Thread.Sleep(seconds * 1000);
+            Process.Start(@"..\..\StoringFolder\ScriptsBat\AddOneLine_RecursiveDir.bat");
+        }
 
-            // Стоит ли каждый раз пересобирать все файлы?
-            // Или отдать на откуп пользователя, чтобы он мог обновлять по своему желанию
-            //files = filesDirectory.GetFiles("*.txt", SearchOption.AllDirectories);
-            
+        public void UpdateListOfFiles()
+        {
+            _files = _filesDirectory.GetFiles("*.txt", SearchOption.AllDirectories);
+        }
+
+        private void StateChecker()
+        {
             while (true)
             {
-                // Чтобы не триггерить ядро процессора
-                //Task.Delay(1000).Wait();
+                // Чтобы не триггерить ядро процессора и в принципе, чтобы создать задержку обновлений
                 Thread.Sleep(1000);
                 for (int i = 0; i < _files.Length; i++)
                 {
@@ -81,52 +79,20 @@ namespace Task_4_1_1_FileManagementSystem
                         {
                             if (_files[i].LastWriteTime != file.LastWriteTime)
                             {
-                                // Так они сразу вызываются, что логично
-                                // TODO: Переделать под потоки
-                                //tasksList.Add(StartCreatingBackup(_files[i]));
-
                                 Thread t = new Thread(new ParameterizedThreadStart(StartCreatingBackup));
-                                t.Name = "StartCreatingBackup -> " + DateTime.Now.ToShortTimeString();
+                                //t.Name = "StartCreatingBackup -> " + DateTime.Now.ToShortTimeString();
                                 t.Start(_files[i]);
-                                myThreads.Add(t);
-
-                                //StartCreatingBackup(_files[i]);
-
+                                
                                 _files[i] = file;
                             }
                         }
                     }
                 }
-
-                //Console.WriteLine(DateTime.Now.ToLongTimeString());
-
-
-                // Блок дополнения файлов
-                //Task.Delay(30000).Wait();
-                //Process.Start(@"..\..\StoringFolder\ScriptsBat\AddOneLine_RecursiveDir.bat");
-
-                //await Task.Delay(3 * 1000);
-
-                //Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                
-                Console.WriteLine("-------------------------" + 
-                    Environment.NewLine + 
-                    $"All Threads = {Process.GetCurrentProcess().Threads.Count}" +
-                    Environment.NewLine +
-                "-------------------------");
-
-                myThreads = myThreads.Where(tr => tr.ThreadState == System.Threading.ThreadState.Running).ToList();
             }
         }
 
-        // Работающий ожидатель
-        public async Task WaiterSelf(int i)
-        {
-            await Task.Delay(i * 1000);
-            Console.WriteLine($"Waited [{i}]");
-        }
-
-        public /*Task*/ void StartCreatingBackup(object fileObj)
+        // Подготовка для старта записи копии файла и его метаИнформации
+        private void StartCreatingBackup(object fileObj)
         {
             FileInfo file = (FileInfo)fileObj;
             // Вытаскиваем имя файла без txt
@@ -151,52 +117,38 @@ namespace Task_4_1_1_FileManagementSystem
                 Directory.CreateDirectory(directoryPath);
             }
 
-            string fileNameWithDate = $"{justFileName}_{file.LastWriteTime.ToString().Replace(":", "!")}.txt";
+            string fileNameWithDate = $"{justFileName}_{file.LastWriteTime.ToString().Replace(":", "!")}";
 
             // Интернируем строку, т.к. пользоваться ей мы будем много раз
             string.Intern(directoryPath);
 
-            
-            Console.ForegroundColor = ConsoleColor.Red;
             // Копируем файл в папку для копий
-            Thread copyThread = new Thread(() => CopyNewStateFile(file, directoryPath, fileNameWithDate));
-            copyThread.Name = "copyThread -> " + DateTime.Now.ToShortTimeString();
-            myThreads.Add(copyThread);
+            Thread copyThread = new Thread(() => CopyNewStateFile(file, directoryPath, $"{fileNameWithDate}.txt"));
+            //copyThread.Name = "copyThread -> " + DateTime.Now.ToShortTimeString();
             copyThread.Start();
+
             // Создаём для него МетаИнфу
             Thread metaThread = new Thread(() => CreateMetaInformationForFile(file, directoryPath, $".{fileNameWithDate}"));
-            metaThread.Name = "metaThread-> " + DateTime.Now.ToShortTimeString();
-            myThreads.Add(metaThread);
+            //metaThread.Name = "metaThread-> " + DateTime.Now.ToShortTimeString();
             metaThread.Start();
-            //Task.WaitAll(copyTask, metaInfTask);
-            //return Task.CompletedTask;
         }
 
         // Функция копирования файлов
-        public /*Task*/ void CopyNewStateFile(FileInfo file, string directoryPath, string fileNameWithDate)
+        private void CopyNewStateFile(FileInfo file, string directoryPath, string fileNameWithDate)
         {
-            Console.WriteLine($"Поток номер -> {Thread.CurrentThread.ManagedThreadId} " +
-                $"| Имя потока -> {Thread.CurrentThread.Name}");
-
             // Копируем файл в путь
             File.Copy(file.FullName, directoryPath + $"\\{fileNameWithDate}", true);
 
-
-            Console.WriteLine("-------------------------" + 
-                Environment.NewLine + 
-                $"File \"{file.Name}\" was backuped with name -> \"{fileNameWithDate}\"!" + 
+            Console.WriteLine("-------------------------" +
+                Environment.NewLine +
+                $"File \"{file.Name}\" was backuped with name -> \"{fileNameWithDate}\"!" +
                 Environment.NewLine +
                 "-------------------------");
-
-            //return Task.CompletedTask;
         }
 
         // Функция создания метаИнфы
-        public /*Task*/ void CreateMetaInformationForFile(FileInfo file, string directoryPath, string fileNameWithDate)
+        private void CreateMetaInformationForFile(FileInfo file, string directoryPath, string fileNameWithDate)
         {
-            Console.WriteLine($"Поток номер -> {Thread.CurrentThread.ManagedThreadId} " +
-                $"| Имя потока -> {Thread.CurrentThread.Name}");
-
             // Создаём файл МетаИнфы и записываем:
             // - Полный путь с файлом
             // - Полный путь без файла
@@ -208,14 +160,12 @@ namespace Task_4_1_1_FileManagementSystem
                 stream.WriteLine(file.DirectoryName);
                 stream.WriteLine(file.LastWriteTime);
             }
-            
+
             Console.WriteLine("-------------------------" +
                 Environment.NewLine +
                 $"For file \"{file.Name}\" was created meta information -> \"{fileNameWithDate}\"!" +
                 Environment.NewLine +
                 "-------------------------");
-
-            //return Task.CompletedTask;
         }
     }
 }
