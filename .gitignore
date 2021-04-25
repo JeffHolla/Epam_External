@@ -360,5 +360,8 @@ MigrationBackup/
 # End of https://www.toptal.com/developers/gitignore/api/visualstudio
 
 
-# Ignore of txt files for Task_4
-Task\ 4/Task_4_1/Task_4_1_1_FileManagementSystem/StoringFolder/SystemInformation/
+# Ignore of all reserve files for Task_4
+Task\ 4/Task_4_1/Task_4_1_1_FileManagementSystem/StoringFolder/SystemInformation/filesCopy/*
+
+# But not ignoring a folders for Task_4
+!Task\ 4/Task_4_1/Task_4_1_1_FileManagementSystem/StoringFolder/SystemInformation/filesCopy/.gitkeep
